@@ -1,0 +1,8 @@
+D:\08 MatProj\Modbus Tools\Modbus Tools\bin\Debug\Modbus Tools.exe
+D:\08 MatProj\Modbus Tools\Modbus Tools\bin\Debug\Modbus Tools.pdb
+D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus Tools.csprojResolveAssemblyReference.cache
+D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus_Tools.frMain.resources
+D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus_Tools.Properties.Resources.resources
+D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus Tools.csproj.GenerateResource.Cache
+D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus Tools.exe
+D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus Tools.pdb
