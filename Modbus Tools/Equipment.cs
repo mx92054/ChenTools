@@ -152,7 +152,6 @@ namespace Modbus_Tools
             }
 
             ser_svr = new WSMBSControl();
-            tcp_svr = new WSMBTControl();
             ser_svr.LicenseKey("2222222222222222222222222F3AA");
             ser_svr.PortName = sName;
             ser_svr.Parity = Parity.None;
