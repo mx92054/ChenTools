@@ -6,3 +6,11 @@ D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus_Tools.Properties.Resour
 D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus Tools.csproj.GenerateResource.Cache
 D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus Tools.exe
 D:\08 MatProj\Modbus Tools\Modbus Tools\obj\Debug\Modbus Tools.pdb
+G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus Tools.exe
+G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus Tools.pdb
+G:\SBC\Chen Tools\Modbus Tools\bin\Debug\Modbus Tools.exe
+G:\SBC\Chen Tools\Modbus Tools\bin\Debug\Modbus Tools.pdb
+G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus Tools.csprojResolveAssemblyReference.cache
+G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus_Tools.frMain.resources
+G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus_Tools.Properties.Resources.resources
+G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus Tools.csproj.GenerateResource.Cache

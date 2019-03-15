@@ -51,10 +51,23 @@ namespace Modbus_Tools
 
         private void btnScan_Click(object sender, EventArgs e)
         {
+            dataView.Rows.Clear();
+
             svr.m_nFunc = lstFunc.SelectedIndex;
             svr.m_sArea = txtArea.Text;
 
-            svr.ProcessFunc();
+            if (!svr.ProcessFunc())
+                return;
+
+            for(int i=0 ; i < svr.m_scanArea.Count; i++)
+                for (int j = 0; j < svr.m_aWRAddress[i].Length; j++)
+                {
+                    if (svr.m_aWRAddress[i][j] == 1)
+                    {
+                        int no = dataView.Rows.Add();
+                        dataView.Rows[no].Cells[0].Value = (svr.m_scanArea[i].start_adr + j).ToString();
+                    }
+                }
         }
     }
 }

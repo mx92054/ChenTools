@@ -13,9 +13,9 @@ using System.Xml.Serialization;
 
 namespace Modbus_Tools
 {
-    class adr_area:IComparable
+    class adr_area : IComparable
     {
-        public ushort start_adr{get; set;}
+        public ushort start_adr { get; set; }
         public ushort end_adr { get; set; }
 
         public int CompareTo(object obj)
@@ -51,7 +51,7 @@ namespace Modbus_Tools
         public string m_sArea;      //读取范围定义
         public string m_sLine;
         [NonSerialized]
-        List<adr_area> m_listArea; 
+        List<adr_area> m_listArea;
 
         public Equipment()
         {
@@ -63,7 +63,6 @@ namespace Modbus_Tools
 
             m_nFunc = 0;
             m_sArea = "0-10,10-20";
-
         }
 
         ~Equipment()
@@ -74,10 +73,10 @@ namespace Modbus_Tools
         //对读写区域的字符串进行处理
         public bool ProcessFunc()
         {
-            string[] tmp ;
-            int x,y ;
-            m_sLine = "Preocess Result:" ;
-            m_listArea = new List<adr_area>() ;
+            string[] tmp;
+            int x, y;
+            m_sLine = "Preocess Result:";
+            m_listArea = new List<adr_area>();
 
             try
             {
@@ -98,10 +97,8 @@ namespace Modbus_Tools
                         adr1.start_adr = (ushort)x;
                         adr1.end_adr = (ushort)x;
                         m_listArea.Add(adr1);
-
-                        m_sLine += x.ToString() + "--" + x.ToString() + " | ";
                     }
-                    else if ( tmp.Length == 2)
+                    else if (tmp.Length == 2)
                     {
                         x = Int32.Parse(tmp[0]);
                         y = Int32.Parse(tmp[1]);
@@ -122,9 +119,7 @@ namespace Modbus_Tools
                             adr1.end_adr = (ushort)x;
                         }
                         m_listArea.Add(adr1);
-
-                        m_sLine += x.ToString() + "--" + y.ToString() + " | ";
-                    }           
+                    }
                 }
             }
             catch (Exception ex)
@@ -135,7 +130,7 @@ namespace Modbus_Tools
 
             m_listArea.Sort();
             OragnizeArea();
-            return true ;
+            return true;
         }
 
 
@@ -145,9 +140,13 @@ namespace Modbus_Tools
             ushort[] end_area = new ushort[100];
             int cur = 0;
             int flag;
+            adr_area t = new adr_area() ;
 
-            foreach (adr_area t in m_listArea)
+            for(int index = 0 ; index < m_listArea.Count; )
             {
+                t.start_adr = m_listArea[index].start_adr ;
+                t.end_adr = m_listArea[index].end_adr ;
+                
                 if (cur == 0)
                 {
                     start_area[cur] = t.start_adr;
@@ -205,14 +204,14 @@ namespace Modbus_Tools
                     end_area[cur] = t.end_adr;
                     cur++;
                 }
-            }            
+            }
 
             string s = "Result :";
             for (int i = 0; i < cur; i++)
             {
                 s += start_area[i].ToString() + "--" + end_area[i].ToString() + " | ";
             }
-            MessageBox.Show(s);           
+            MessageBox.Show(s);
         }
     }
 
@@ -242,5 +241,5 @@ namespace Modbus_Tools
             }
         }
     }
-    
+
 }
