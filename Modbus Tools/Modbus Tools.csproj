@@ -43,6 +43,18 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WSMBS, Version=2.4.1.0, Culture=neutral, PublicKeyToken=22ed5ecd6aa4bb65, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WSMBS.dll</HintPath>
+    </Reference>
+    <Reference Include="WSMBT, Version=2.3.0.1, Culture=neutral, PublicKeyToken=3b3e4f51300bed33, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\WSMBT.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph, Version=1.0.1812.29779, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\ZedGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Equipment.cs" />

@@ -14,3 +14,13 @@ G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus Tools.csprojResolveAssemblyRefer
 G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus_Tools.frMain.resources
 G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus_Tools.Properties.Resources.resources
 G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus Tools.csproj.GenerateResource.Cache
+F:\VcProj\Chen Modbus\Modbus Tools\obj\Debug\Modbus Tools.csprojResolveAssemblyReference.cache
+F:\VcProj\Chen Modbus\Modbus Tools\obj\Debug\Modbus_Tools.frMain.resources
+F:\VcProj\Chen Modbus\Modbus Tools\obj\Debug\Modbus_Tools.Properties.Resources.resources
+F:\VcProj\Chen Modbus\Modbus Tools\obj\Debug\Modbus Tools.csproj.GenerateResource.Cache
+F:\VcProj\Chen Modbus\Modbus Tools\obj\Debug\Modbus Tools.exe
+F:\VcProj\Chen Modbus\Modbus Tools\bin\Debug\Modbus Tools.exe
+F:\VcProj\Chen Modbus\Modbus Tools\bin\Debug\Modbus Tools.pdb
+F:\VcProj\Chen Modbus\Modbus Tools\obj\Debug\Modbus Tools.pdb
+F:\VcProj\Chen Modbus\Modbus Tools\bin\Debug\WSMBS.xml
+F:\VcProj\Chen Modbus\Modbus Tools\bin\Debug\WSMBT.xml

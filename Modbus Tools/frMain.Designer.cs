@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splMain = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnSuspend = new System.Windows.Forms.Button();
@@ -39,15 +40,21 @@
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.cbBaudrate = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labPara2 = new System.Windows.Forms.Label();
             this.cbSerial = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labPara1 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbProcotol = new System.Windows.Forms.ComboBox();
             this.dataView = new System.Windows.Forms.DataGridView();
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numStation = new System.Windows.Forms.NumericUpDown();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.labStatus = new System.Windows.Forms.Label();
+            this.txtIPAdr = new System.Windows.Forms.TextBox();
+            this.numPortNo = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
             this.splMain.Panel1.SuspendLayout();
             this.splMain.Panel2.SuspendLayout();
@@ -55,6 +62,8 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).BeginInit();
             this.SuspendLayout();
             // 
             // splMain
@@ -67,6 +76,7 @@
             // 
             // splMain.Panel1
             // 
+            this.splMain.Panel1.Controls.Add(this.labStatus);
             this.splMain.Panel1.Controls.Add(this.groupBox2);
             this.splMain.Panel1.Controls.Add(this.groupBox1);
             this.splMain.Panel1.Font = new System.Drawing.Font("Consolas", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -81,6 +91,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.numStation);
+            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.btnSuspend);
             this.groupBox2.Controls.Add(this.btnScan);
             this.groupBox2.Controls.Add(this.label4);
@@ -95,16 +107,19 @@
             // 
             // btnSuspend
             // 
-            this.btnSuspend.Location = new System.Drawing.Point(119, 227);
+            this.btnSuspend.Enabled = false;
+            this.btnSuspend.Location = new System.Drawing.Point(119, 231);
             this.btnSuspend.Name = "btnSuspend";
             this.btnSuspend.Size = new System.Drawing.Size(75, 23);
             this.btnSuspend.TabIndex = 8;
             this.btnSuspend.Text = "暂停";
             this.btnSuspend.UseVisualStyleBackColor = true;
+            this.btnSuspend.Click += new System.EventHandler(this.btnSuspend_Click);
             // 
             // btnScan
             // 
-            this.btnScan.Location = new System.Drawing.Point(6, 227);
+            this.btnScan.Enabled = false;
+            this.btnScan.Location = new System.Drawing.Point(6, 231);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(75, 23);
             this.btnScan.TabIndex = 7;
@@ -115,7 +130,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 110);
+            this.label4.Location = new System.Drawing.Point(6, 133);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(176, 17);
             this.label4.TabIndex = 4;
@@ -123,7 +138,7 @@
             // 
             // txtArea
             // 
-            this.txtArea.Location = new System.Drawing.Point(6, 137);
+            this.txtArea.Location = new System.Drawing.Point(6, 153);
             this.txtArea.Multiline = true;
             this.txtArea.Name = "txtArea";
             this.txtArea.Size = new System.Drawing.Size(188, 72);
@@ -146,12 +161,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.numPortNo);
+            this.groupBox1.Controls.Add(this.txtIPAdr);
             this.groupBox1.Controls.Add(this.btnDisconnect);
             this.groupBox1.Controls.Add(this.btnConnect);
             this.groupBox1.Controls.Add(this.cbBaudrate);
-            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.labPara2);
             this.groupBox1.Controls.Add(this.cbSerial);
-            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.labPara1);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cbProcotol);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -165,6 +182,7 @@
             // 
             // btnDisconnect
             // 
+            this.btnDisconnect.Enabled = false;
             this.btnDisconnect.Location = new System.Drawing.Point(119, 161);
             this.btnDisconnect.Name = "btnDisconnect";
             this.btnDisconnect.Size = new System.Drawing.Size(75, 23);
@@ -192,39 +210,39 @@
             "38400",
             "57600",
             "115200"});
-            this.cbBaudrate.Location = new System.Drawing.Point(88, 120);
+            this.cbBaudrate.Location = new System.Drawing.Point(76, 112);
             this.cbBaudrate.Margin = new System.Windows.Forms.Padding(2);
             this.cbBaudrate.Name = "cbBaudrate";
-            this.cbBaudrate.Size = new System.Drawing.Size(106, 25);
+            this.cbBaudrate.Size = new System.Drawing.Size(118, 25);
             this.cbBaudrate.TabIndex = 4;
             // 
-            // label3
+            // labPara2
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 128);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 17);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "波特率";
+            this.labPara2.AutoSize = true;
+            this.labPara2.Location = new System.Drawing.Point(15, 120);
+            this.labPara2.Name = "labPara2";
+            this.labPara2.Size = new System.Drawing.Size(56, 17);
+            this.labPara2.TabIndex = 3;
+            this.labPara2.Text = "波特率";
             // 
             // cbSerial
             // 
             this.cbSerial.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbSerial.FormattingEnabled = true;
-            this.cbSerial.Location = new System.Drawing.Point(18, 83);
+            this.cbSerial.Location = new System.Drawing.Point(18, 81);
             this.cbSerial.Margin = new System.Windows.Forms.Padding(2);
             this.cbSerial.Name = "cbSerial";
             this.cbSerial.Size = new System.Drawing.Size(176, 22);
             this.cbSerial.TabIndex = 3;
             // 
-            // label2
+            // labPara1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 64);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 17);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "串口选择";
+            this.labPara1.AutoSize = true;
+            this.labPara1.Location = new System.Drawing.Point(15, 60);
+            this.labPara1.Name = "labPara1";
+            this.labPara1.Size = new System.Drawing.Size(72, 17);
+            this.labPara1.TabIndex = 2;
+            this.labPara1.Text = "串口选择";
             // 
             // label1
             // 
@@ -247,6 +265,7 @@
             this.cbProcotol.Name = "cbProcotol";
             this.cbProcotol.Size = new System.Drawing.Size(102, 25);
             this.cbProcotol.TabIndex = 0;
+            this.cbProcotol.SelectedIndexChanged += new System.EventHandler(this.cbProcotol_SelectedIndexChanged);
             // 
             // dataView
             // 
@@ -281,6 +300,81 @@
             this.Desc.Name = "Desc";
             this.Desc.Width = 300;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 108);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(72, 17);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "站地址：";
+            // 
+            // numStation
+            // 
+            this.numStation.Location = new System.Drawing.Point(92, 106);
+            this.numStation.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numStation.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numStation.Name = "numStation";
+            this.numStation.Size = new System.Drawing.Size(102, 24);
+            this.numStation.TabIndex = 10;
+            this.numStation.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // labStatus
+            // 
+            this.labStatus.AutoSize = true;
+            this.labStatus.Location = new System.Drawing.Point(15, 774);
+            this.labStatus.Name = "labStatus";
+            this.labStatus.Size = new System.Drawing.Size(32, 17);
+            this.labStatus.TabIndex = 2;
+            this.labStatus.Text = "0/0";
+            // 
+            // txtIPAdr
+            // 
+            this.txtIPAdr.Location = new System.Drawing.Point(42, 79);
+            this.txtIPAdr.Name = "txtIPAdr";
+            this.txtIPAdr.Size = new System.Drawing.Size(152, 24);
+            this.txtIPAdr.TabIndex = 1;
+            this.txtIPAdr.Text = "127.0.0.1";
+            // 
+            // numPortNo
+            // 
+            this.numPortNo.Location = new System.Drawing.Point(92, 112);
+            this.numPortNo.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+            this.numPortNo.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numPortNo.Name = "numPortNo";
+            this.numPortNo.Size = new System.Drawing.Size(102, 24);
+            this.numPortNo.TabIndex = 1;
+            this.numPortNo.Value = new decimal(new int[] {
+            502,
+            0,
+            0,
+            0});
+            // 
             // frMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -292,6 +386,7 @@
             this.Text = "Modbus Tools  (Written by chenming  chenm@idsse.ac.cn)";
             this.Load += new System.EventHandler(this.frMain_Load);
             this.splMain.Panel1.ResumeLayout(false);
+            this.splMain.Panel1.PerformLayout();
             this.splMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).EndInit();
             this.splMain.ResumeLayout(false);
@@ -300,6 +395,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -311,9 +408,9 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox cbProcotol;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labPara1;
         private System.Windows.Forms.ComboBox cbBaudrate;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labPara2;
         private System.Windows.Forms.ComboBox cbSerial;
         private System.Windows.Forms.Button btnDisconnect;
         private System.Windows.Forms.Button btnConnect;
@@ -326,6 +423,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Address;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
         private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
+        private System.Windows.Forms.NumericUpDown numStation;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label labStatus;
+        private System.Windows.Forms.NumericUpDown numPortNo;
+        private System.Windows.Forms.TextBox txtIPAdr;
     }
 }
 

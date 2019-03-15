@@ -10,31 +10,60 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using System.Threading;
+using WSMBS;
+using WSMBT;
+
 
 namespace Modbus_Tools
 {
-    class adr_area : IComparable
+    class adr_area : IComparable<adr_area>
     {
-        public ushort start_adr { get; set; }
-        public ushort end_adr { get; set; }
+        private ushort adr1;
+        private ushort adr2;
+        public int length { get; set;}
+        public int index { get; set; }
 
-        public int CompareTo(object obj)
+        public ushort start_adr
         {
-            int result;
-            try
+            get
             {
-                adr_area adr = obj as adr_area;
-                if (this.start_adr < adr.start_adr)
-                    result = 0;
-                else
-                    result = 1;
+                return adr1;
+            }
+            set
+            {
+                adr1 = value;
+                length = adr2 - adr1 + 1;
+            }
+        }
 
-                return result;
-            }
-            catch (Exception ex)
+        public ushort end_adr
+        {
+            get
             {
-                throw new Exception(ex.Message);
+                return adr2;
             }
+
+            set
+            {
+                adr2 = value;
+                length = adr2 - adr1 + 1;
+            }
+        }
+
+        public int CompareTo(adr_area other)
+        {
+            if (null == other)
+                return 1;
+
+            return this.adr1.CompareTo(other.adr1);
+        }
+
+        public adr_area(ushort i = 0, ushort j = 0)
+        {
+            adr1 = i;
+            adr2 = j;
+            length = adr2 - adr1 + 1;
         }
     }
 
@@ -50,9 +79,43 @@ namespace Modbus_Tools
         public int m_nFunc;         //功能号
         public string m_sArea;      //读取范围定义
         public string m_sLine;
-        [NonSerialized]
-        List<adr_area> m_listArea;
+        public int m_nStation;
 
+        [NonSerialized]
+        public int nSucc;   //成功通信次数
+        [NonSerialized]
+        public int nFail;   //失败通信次数
+
+        [NonSerialized]
+        public List<adr_area> m_listArea;
+
+        [NonSerialized]
+        public List<adr_area> m_scanArea;
+
+        [NonSerialized]
+        public short[][] m_sValue;     //读写值寄存器
+
+        [NonSerialized]
+        public bool[][] m_bValue;     //读写值开关量
+
+        [NonSerialized]
+        public int[][] m_nRWFlag;      //读写标记
+
+        [NonSerialized]
+        private WSMBSControl ser_svr;
+
+        [NonSerialized]
+        private WSMBTControl tcp_svr;
+
+        [NonSerialized]
+        public bool bWorking;
+
+        [NonSerialized]
+        Thread task;
+
+        /// <summary>
+        /// 初始化函数
+        /// </summary>
         public Equipment()
         {
             m_nProcotol = 0;
@@ -65,12 +128,134 @@ namespace Modbus_Tools
             m_sArea = "0-10,10-20";
         }
 
+        /// <summary>
+        /// 析构函数
+        /// </summary>
         ~Equipment()
         {
             SerialHelper.SerializeMethod(this);
         }
 
-        //对读写区域的字符串进行处理
+        /// <summary>
+        /// 端口连接函数
+        /// </summary>
+        /// <param name="sName"></param>
+        /// <param name="nPort"></param>
+        /// <returns></returns>
+        public bool MB_Connect(string sName, int nPort)
+        {
+            if (m_nProcotol == 2)
+            {
+                tcp_svr = new WSMBTControl();
+                tcp_svr.LicenseKey("2222222222222222222222222AAF2");
+               return (WSMBT.Result.SUCCESS == tcp_svr.Connect(sName, nPort));
+            }
+
+            ser_svr = new WSMBSControl();
+            tcp_svr = new WSMBTControl();
+            ser_svr.LicenseKey("2222222222222222222222222F3AA");
+            ser_svr.PortName = sName;
+            ser_svr.Parity = Parity.None;
+            ser_svr.DataBits = 8;
+            ser_svr.StopBits = 1;
+            ser_svr.BaudRate = nPort;
+            return (WSMBS.Result.SUCCESS == ser_svr.Open());
+        }
+
+        /// <summary>
+        /// 端口关闭函数
+        /// </summary>
+        public void MB_Close()
+        {
+            bWorking = false;
+
+            if (m_nProcotol == 2)
+                tcp_svr.Close();
+            else
+                ser_svr.Close();
+        }
+
+        /// <summary>
+        /// 开始进行寄存器读取
+        /// </summary>
+        public void MB_Scan()
+        {
+            if (task != null)
+                task.Abort();
+
+            task = new Thread(new ParameterizedThreadStart(Scan_Task));
+            task.IsBackground = true;
+            bWorking = true;
+            task.Start(this);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        private static void Scan_Task(object obj)
+        {
+            Equipment eq = obj as Equipment;
+
+            WSMBS.Result sres;
+            WSMBT.Result tres;
+
+            while( eq.bWorking)
+            {
+                sres = WSMBS.Result.SUCCESS;
+                tres = WSMBT.Result.SUCCESS;
+                for (int Index = 0; Index < eq.m_scanArea.Count; Index++)
+                {
+                    if (eq.m_nProcotol == 2)
+                    {
+                        switch (eq.m_nFunc)
+                        {
+                            case 0:
+                                tres = eq.tcp_svr.ReadCoils((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                break;
+                            case 1:
+                                tres = eq.tcp_svr.ReadDiscreteInputs((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                break;
+                            case 2:
+                                tres = eq.tcp_svr.ReadHoldingRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                break;
+                            case 3:
+                                tres = eq.tcp_svr.ReadInputRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (eq.m_nFunc)
+                        {
+                            case 0:
+                                sres = eq.ser_svr.ReadCoils((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                break;
+                            case 1:
+                                sres = eq.ser_svr.ReadDiscreteInputs((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                break;
+                            case 2:
+                                sres = eq.ser_svr.ReadHoldingRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                break;
+                            case 3:
+                                sres = eq.ser_svr.ReadInputRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                break;
+                        }
+                    }
+
+                    if (sres == WSMBS.Result.SUCCESS && tres == WSMBT.Result.SUCCESS)
+                        eq.nSucc++;
+                    else
+                        eq.nFail++;
+                }
+            }
+        }
+
+
+        /// <summary>+
+        /// 对读写区域的字符串进行处理
+        /// </summary>
+        /// <returns></returns>
         public bool ProcessFunc()
         {
             string[] tmp;
@@ -80,7 +265,6 @@ namespace Modbus_Tools
 
             try
             {
-
                 string[] astr = m_sArea.Split(',');
                 foreach (string s in astr)
                 {
@@ -133,66 +317,71 @@ namespace Modbus_Tools
             return true;
         }
 
-
+        /// <summary>
+        /// 组织存储区域
+        /// </summary>
         private void OragnizeArea()
         {
-            ushort[] start_area = new ushort[100];
-            ushort[] end_area = new ushort[100];
-            int cur = 0;
+            ushort start_area;
+            ushort end_area;
             int flag;
-            adr_area t = new adr_area() ;
+            adr_area node ;
+            adr_area t = new adr_area();
 
-            for(int index = 0 ; index < m_listArea.Count; )
+            m_scanArea = new List<adr_area>();
+
+
+            for(int index = 0 ; index < m_listArea.Count; index++ )
             {
                 t.start_adr = m_listArea[index].start_adr ;
                 t.end_adr = m_listArea[index].end_adr ;
                 
-                if (cur == 0)
+                flag = 0;                 
+                for (int i = 0; i < m_scanArea.Count; i++)
                 {
-                    start_area[cur] = t.start_adr;
-                    end_area[cur] = t.end_adr;
-                    cur++;
-                    continue;
-                }
-                flag = 0;
-                for (int i = 0; i < cur; i++)
-                {
+                    start_area = m_scanArea[i].start_adr;
+                    end_area = m_scanArea[i].end_adr;
+
                     //调整当前的起始指针，避免重复
-                    if (t.start_adr > start_area[i] && t.start_adr < end_area[i] && t.end_adr >= end_area[i])
-                        t.start_adr = end_area[i];
+                    if (t.start_adr > start_area && t.start_adr < end_area && t.end_adr >= end_area)
+                        t.start_adr = end_area;
 
                     //调整当前的结束指针，避免重复
-                    if (t.end_adr < end_area[i] && t.end_adr > start_area[i] && t.start_adr <= start_area[i])
-                        t.end_adr = start_area[i];
+                    if (t.end_adr < end_area && t.end_adr > start_area && t.start_adr <= start_area)
+                        t.end_adr = start_area;
 
                     //情况1  当前包含在里面
-                    if (t.start_adr >= start_area[i] && t.end_adr <= end_area[i])
+                    if (t.start_adr >= start_area && t.end_adr <= end_area)
                     {
                         flag = 1;
+                        m_listArea[index].index = i ;
                         break;
                     }
                     //情况2 起始地址小，结束地址已包含，总和小于120
-                    if (t.start_adr <= start_area[i] && t.end_adr <= end_area[i] && end_area[i] - t.start_adr <= 120)
+                    if (t.start_adr <= start_area && t.end_adr <= end_area && end_area - t.start_adr <= 120)
                     {
                         flag = 1;
-                        start_area[i] = t.start_adr;
+                        m_listArea[index].index = i ;
+                        m_scanArea[i].start_adr = t.start_adr;
                         break;
                     }
 
                     //情况3 起始地址小，结束地址大，总和小于120
-                    if (t.start_adr <= start_area[i] && t.end_adr > end_area[i] && t.end_adr - t.start_adr <= 120)
+                    if (t.start_adr <= start_area && t.end_adr > end_area && t.end_adr - t.start_adr <= 120)
                     {
                         flag = 1;
-                        start_area[i] = t.start_adr;
-                        end_area[i] = t.end_adr;
+                        m_listArea[index].index = i ;
+                        m_scanArea[i].start_adr = t.start_adr;
+                        m_scanArea[i].end_adr = t.end_adr;
                         break;
                     }
 
                     //情况4 起始地址包含，结束地址大，总和小于120
-                    if (t.start_adr > start_area[i] && t.end_adr > end_area[i] && t.end_adr - start_area[i] <= 120)
+                    if (t.start_adr > start_area && t.end_adr > end_area && t.end_adr - start_area <= 120)
                     {
                         flag = 1;
-                        end_area[i] = t.end_adr;
+                        m_listArea[index].index = i ;
+                        m_scanArea[i].end_adr = t.end_adr;
                         break;
                     }
                 }
@@ -200,18 +389,27 @@ namespace Modbus_Tools
                 //未发现匹配的
                 if (flag == 0)
                 {
-                    start_area[cur] = t.start_adr;
-                    end_area[cur] = t.end_adr;
-                    cur++;
+                    node = new adr_area(t.start_adr, t.end_adr);
+                    m_listArea[index].index = m_scanArea.Count ;
+                    m_scanArea.Add(node);
                 }
             }
 
-            string s = "Result :";
-            for (int i = 0; i < cur; i++)
+            //申请内存
+            m_sValue = new short[m_scanArea.Count][];
+            m_bValue = new bool[m_scanArea.Count][];
+            m_nRWFlag = new int[m_scanArea.Count][];
+
+            for (int i = 0; i < m_scanArea.Count; i++)
             {
-                s += start_area[i].ToString() + "--" + end_area[i].ToString() + " | ";
+                m_sValue[i] = new short[m_scanArea[i].length];
+                m_bValue[i] = new bool[m_scanArea[i].length];
+                m_nRWFlag[i] = new int[m_scanArea[i].length];
             }
-            MessageBox.Show(s);
+
+            for (int i = 0; i < m_listArea.Count; i++)
+                for (int j = m_listArea[i].start_adr; j <= m_listArea[i].end_adr; j++)
+                    m_nRWFlag[m_listArea[i].index][j - m_scanArea[m_listArea[i].index].start_adr] = 1;
         }
     }
 
