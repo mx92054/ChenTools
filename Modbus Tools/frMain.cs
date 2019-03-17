@@ -12,6 +12,8 @@ namespace Modbus_Tools
     public partial class frMain : Form
     {
         private Equipment svr;
+        private bool bScan;
+        private RegAlais rAlais;
 
         public frMain()
         {
@@ -20,8 +22,15 @@ namespace Modbus_Tools
 
         private void frMain_Load(object sender, EventArgs e)
         {
-            SerialHelper.ReserializeMethod(ref svr);
-            //svr = new Equipment();
+            try
+            {
+                SerialHelper.ReserializeMethod(ref svr);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("初始设置函数出现异常，采用默认配置！");
+                svr = new Equipment();
+            }
 
             string[] astr = PortEnum.MulGetHardwareInfo(PortEnum.HardwareEnum.Win32_PnPEntity, "Name");
             foreach (string vPortName in astr)
@@ -37,7 +46,7 @@ namespace Modbus_Tools
             numPortNo.Value = svr.m_nIPPort;
 
             lstFunc.SelectedIndex = svr.m_nFunc;
-            txtArea.Text = svr.m_sArea;
+            txtArea.Text = svr.m_sArea[svr.m_nFunc];
 
             if (svr.m_nProcotol == 2)
             {
@@ -58,6 +67,23 @@ namespace Modbus_Tools
                 numPortNo.Visible = false;
             }
 
+            rAlais = new RegAlais();
+            foreach (string s in rAlais.asFileName)
+                cbFileName.Items.Add(s);
+
+            ckAlais.Checked = svr.bAlais;
+            cbFileName.SelectedItem = svr.sAlaisFile;
+            if (ckAlais.Checked)
+            {
+                rAlais.ReadCSVFile(svr.sAlaisFile);
+                btnFlash.Enabled = true;
+            }
+            else
+                btnFlash.Enabled = false;
+
+            timer1.Interval = svr.m_nCycle;
+            numScanCycle.Value = svr.m_nCycle;
+            ckHex.Checked = svr.bHex;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -101,6 +127,7 @@ namespace Modbus_Tools
             btnDisconnect.Enabled = false;
             btnScan.Enabled = false;
             btnSuspend.Enabled = false;
+            bScan = false;
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -108,7 +135,7 @@ namespace Modbus_Tools
             dataView.Rows.Clear();
 
             svr.m_nFunc = lstFunc.SelectedIndex;
-            svr.m_sArea = txtArea.Text;
+            svr.m_sArea[svr.m_nFunc] = txtArea.Text;
             svr.m_nStation = (int)numStation.Value;
 
             if (!svr.ProcessFunc())
@@ -121,13 +148,17 @@ namespace Modbus_Tools
                     if (svr.m_nRWFlag[i][j] == 1)
                     {
                         int no = dataView.Rows.Add();
-                        dataView.Rows[no].Cells[0].Value = (svr.m_scanArea[i].start_adr + j).ToString();
+                        int adr = svr.m_scanArea[i].start_adr + j ;
+                        dataView.Rows[no].Cells[0].Value = adr.ToString();
+                        if (ckAlais.Checked)
+                            dataView.Rows[no].Cells[2].Value = rAlais.GetAlais(adr);
                     }
                 }
 
             svr.MB_Scan();
 
             timer1.Enabled = true;
+            bScan = true;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -140,7 +171,7 @@ namespace Modbus_Tools
                     if (svr.m_nRWFlag[i][j] == 1)
                     {
                         if ( svr.m_nFunc > 1 )
-                            dataView.Rows[nCur++].Cells[1].Value = svr.m_sValue[i][j].ToString();
+                            dataView.Rows[nCur++].Cells[1].Value = svr.m_sValue[i][j].ToString(svr.bHex?"X4":"");
                         else
                             dataView.Rows[nCur++].Cells[1].Value = svr.m_bValue[i][j].ToString();
                     }
@@ -152,6 +183,7 @@ namespace Modbus_Tools
         {
             svr.bWorking = false;
             timer1.Enabled = false;
+            bScan = false;
         }
 
         private void cbProcotol_SelectedIndexChanged(object sender, EventArgs e)
@@ -174,6 +206,74 @@ namespace Modbus_Tools
                 txtIPAdr.Visible = false;
                 numPortNo.Visible = false;
             }
+        }
+
+        private void dataView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 1 || !bScan)
+                return;
+
+            try
+            {
+                short val = Int16.Parse(dataView.Rows[e.RowIndex].Cells[1].Value.ToString());
+                svr.In_Queue(e.RowIndex, val);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ckAlais_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ckAlais.Checked && cbFileName.SelectedIndex >= 0)
+            {
+                svr.sAlaisFile = cbFileName.SelectedItem.ToString();
+                rAlais.ReadCSVFile(svr.sAlaisFile);
+                btnFlash.Enabled = true;
+            }
+            else
+                btnFlash.Enabled = false;
+
+            svr.bAlais = ckAlais.Checked;
+        }
+
+        private void btnFlash_Click(object sender, EventArgs e)
+        {
+            if (!bScan)
+                return;
+
+            if (!ckAlais.Checked || cbFileName.SelectedIndex < 0)
+                return;
+
+            rAlais.ReadCSVFile(cbFileName.SelectedItem.ToString());
+
+            int counter = 0;
+            for (int i = 0; i < svr.m_scanArea.Count; i++)
+                for (int j = 0; j < svr.m_nRWFlag[i].Length; j++)
+                {
+                    if (svr.m_nRWFlag[i][j] == 1)
+                    {
+                        int adr = svr.m_scanArea[i].start_adr + j;
+                        dataView.Rows[counter++].Cells[2].Value = rAlais.GetAlais(adr);
+                    }
+                }
+        }
+
+        private void lstFunc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtArea.Text = svr.m_sArea[lstFunc.SelectedIndex];
+        }
+
+        private void ckHex_CheckedChanged(object sender, EventArgs e)
+        {
+            svr.bHex = ckHex.Checked;
+        }
+
+        private void numScanCycle_ValueChanged(object sender, EventArgs e)
+        {
+            svr.m_nCycle = (int)numScanCycle.Value;
+            timer1.Interval = svr.m_nCycle;
         }
     }
 }

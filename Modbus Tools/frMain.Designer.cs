@@ -30,13 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splMain = new System.Windows.Forms.SplitContainer();
+            this.labStatus = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numStation = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnSuspend = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtArea = new System.Windows.Forms.TextBox();
             this.lstFunc = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.numPortNo = new System.Windows.Forms.NumericUpDown();
+            this.txtIPAdr = new System.Windows.Forms.TextBox();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
             this.cbBaudrate = new System.Windows.Forms.ComboBox();
@@ -46,24 +51,31 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbProcotol = new System.Windows.Forms.ComboBox();
             this.dataView = new System.Windows.Forms.DataGridView();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbFileName = new System.Windows.Forms.ComboBox();
+            this.ckAlais = new System.Windows.Forms.CheckBox();
+            this.btnFlash = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numScanCycle = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ckHex = new System.Windows.Forms.CheckBox();
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numStation = new System.Windows.Forms.NumericUpDown();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.labStatus = new System.Windows.Forms.Label();
-            this.txtIPAdr = new System.Windows.Forms.TextBox();
-            this.numPortNo = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
             this.splMain.Panel1.SuspendLayout();
             this.splMain.Panel2.SuspendLayout();
             this.splMain.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStation)).BeginInit();
+            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataView)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).BeginInit();
             this.SuspendLayout();
             // 
             // splMain
@@ -76,6 +88,8 @@
             // 
             // splMain.Panel1
             // 
+            this.splMain.Panel1.Controls.Add(this.groupBox4);
+            this.splMain.Panel1.Controls.Add(this.groupBox3);
             this.splMain.Panel1.Controls.Add(this.labStatus);
             this.splMain.Panel1.Controls.Add(this.groupBox2);
             this.splMain.Panel1.Controls.Add(this.groupBox1);
@@ -88,6 +102,15 @@
             this.splMain.SplitterDistance = 216;
             this.splMain.SplitterWidth = 2;
             this.splMain.TabIndex = 0;
+            // 
+            // labStatus
+            // 
+            this.labStatus.AutoSize = true;
+            this.labStatus.Location = new System.Drawing.Point(15, 774);
+            this.labStatus.Name = "labStatus";
+            this.labStatus.Size = new System.Drawing.Size(32, 17);
+            this.labStatus.TabIndex = 2;
+            this.labStatus.Text = "0/0";
             // 
             // groupBox2
             // 
@@ -104,6 +127,37 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "通信参数";
+            // 
+            // numStation
+            // 
+            this.numStation.Location = new System.Drawing.Point(92, 106);
+            this.numStation.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.numStation.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numStation.Name = "numStation";
+            this.numStation.Size = new System.Drawing.Size(102, 24);
+            this.numStation.TabIndex = 10;
+            this.numStation.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(9, 108);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(72, 17);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "站地址：";
             // 
             // btnSuspend
             // 
@@ -158,6 +212,7 @@
             this.lstFunc.Name = "lstFunc";
             this.lstFunc.Size = new System.Drawing.Size(188, 72);
             this.lstFunc.TabIndex = 0;
+            this.lstFunc.SelectedIndexChanged += new System.EventHandler(this.lstFunc_SelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -179,6 +234,36 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "接口参数";
+            // 
+            // numPortNo
+            // 
+            this.numPortNo.Location = new System.Drawing.Point(92, 112);
+            this.numPortNo.Maximum = new decimal(new int[] {
+            65536,
+            0,
+            0,
+            0});
+            this.numPortNo.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numPortNo.Name = "numPortNo";
+            this.numPortNo.Size = new System.Drawing.Size(102, 24);
+            this.numPortNo.TabIndex = 1;
+            this.numPortNo.Value = new decimal(new int[] {
+            502,
+            0,
+            0,
+            0});
+            // 
+            // txtIPAdr
+            // 
+            this.txtIPAdr.Location = new System.Drawing.Point(42, 79);
+            this.txtIPAdr.Name = "txtIPAdr";
+            this.txtIPAdr.Size = new System.Drawing.Size(152, 24);
+            this.txtIPAdr.TabIndex = 1;
+            this.txtIPAdr.Text = "127.0.0.1";
             // 
             // btnDisconnect
             // 
@@ -269,6 +354,8 @@
             // 
             // dataView
             // 
+            this.dataView.AllowUserToAddRows = false;
+            this.dataView.AllowUserToDeleteRows = false;
             this.dataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Address,
@@ -281,11 +368,124 @@
             this.dataView.RowTemplate.Height = 20;
             this.dataView.Size = new System.Drawing.Size(455, 800);
             this.dataView.TabIndex = 0;
+            this.dataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellEndEdit);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnFlash);
+            this.groupBox3.Controls.Add(this.ckAlais);
+            this.groupBox3.Controls.Add(this.cbFileName);
+            this.groupBox3.Location = new System.Drawing.Point(12, 482);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(200, 101);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "变量注释";
+            // 
+            // cbFileName
+            // 
+            this.cbFileName.FormattingEnabled = true;
+            this.cbFileName.Location = new System.Drawing.Point(9, 23);
+            this.cbFileName.Name = "cbFileName";
+            this.cbFileName.Size = new System.Drawing.Size(185, 25);
+            this.cbFileName.TabIndex = 1;
+            // 
+            // ckAlais
+            // 
+            this.ckAlais.AutoSize = true;
+            this.ckAlais.Location = new System.Drawing.Point(9, 67);
+            this.ckAlais.Name = "ckAlais";
+            this.ckAlais.Size = new System.Drawing.Size(59, 21);
+            this.ckAlais.TabIndex = 1;
+            this.ckAlais.Text = "启用";
+            this.ckAlais.UseVisualStyleBackColor = true;
+            this.ckAlais.CheckedChanged += new System.EventHandler(this.ckAlais_CheckedChanged);
+            // 
+            // btnFlash
+            // 
+            this.btnFlash.Enabled = false;
+            this.btnFlash.Location = new System.Drawing.Point(119, 65);
+            this.btnFlash.Name = "btnFlash";
+            this.btnFlash.Size = new System.Drawing.Size(75, 23);
+            this.btnFlash.TabIndex = 1;
+            this.btnFlash.Text = "刷新";
+            this.btnFlash.UseVisualStyleBackColor = true;
+            this.btnFlash.Click += new System.EventHandler(this.btnFlash_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.ckHex);
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.numScanCycle);
+            this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Location = new System.Drawing.Point(12, 598);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(200, 89);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "显示参数";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(15, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(72, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "扫描时间";
+            // 
+            // numScanCycle
+            // 
+            this.numScanCycle.Location = new System.Drawing.Point(93, 25);
+            this.numScanCycle.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numScanCycle.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numScanCycle.Name = "numScanCycle";
+            this.numScanCycle.Size = new System.Drawing.Size(101, 24);
+            this.numScanCycle.TabIndex = 1;
+            this.numScanCycle.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numScanCycle.ValueChanged += new System.EventHandler(this.numScanCycle_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 59);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 17);
+            this.label3.TabIndex = 5;
+            // 
+            // ckHex
+            // 
+            this.ckHex.AutoSize = true;
+            this.ckHex.Location = new System.Drawing.Point(71, 62);
+            this.ckHex.Name = "ckHex";
+            this.ckHex.Size = new System.Drawing.Size(123, 21);
+            this.ckHex.TabIndex = 4;
+            this.ckHex.Text = "十六进制显示";
+            this.ckHex.UseVisualStyleBackColor = true;
+            this.ckHex.CheckedChanged += new System.EventHandler(this.ckHex_CheckedChanged);
             // 
             // Address
             // 
             this.Address.HeaderText = "地址";
             this.Address.Name = "Address";
+            this.Address.ReadOnly = true;
             this.Address.Width = 40;
             // 
             // Value
@@ -298,82 +498,8 @@
             // 
             this.Desc.HeaderText = "描述";
             this.Desc.Name = "Desc";
+            this.Desc.ReadOnly = true;
             this.Desc.Width = 300;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 108);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(72, 17);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "站地址：";
-            // 
-            // numStation
-            // 
-            this.numStation.Location = new System.Drawing.Point(92, 106);
-            this.numStation.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.numStation.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numStation.Name = "numStation";
-            this.numStation.Size = new System.Drawing.Size(102, 24);
-            this.numStation.TabIndex = 10;
-            this.numStation.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 500;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // labStatus
-            // 
-            this.labStatus.AutoSize = true;
-            this.labStatus.Location = new System.Drawing.Point(15, 774);
-            this.labStatus.Name = "labStatus";
-            this.labStatus.Size = new System.Drawing.Size(32, 17);
-            this.labStatus.TabIndex = 2;
-            this.labStatus.Text = "0/0";
-            // 
-            // txtIPAdr
-            // 
-            this.txtIPAdr.Location = new System.Drawing.Point(42, 79);
-            this.txtIPAdr.Name = "txtIPAdr";
-            this.txtIPAdr.Size = new System.Drawing.Size(152, 24);
-            this.txtIPAdr.TabIndex = 1;
-            this.txtIPAdr.Text = "127.0.0.1";
-            // 
-            // numPortNo
-            // 
-            this.numPortNo.Location = new System.Drawing.Point(92, 112);
-            this.numPortNo.Maximum = new decimal(new int[] {
-            65536,
-            0,
-            0,
-            0});
-            this.numPortNo.Minimum = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numPortNo.Name = "numPortNo";
-            this.numPortNo.Size = new System.Drawing.Size(102, 24);
-            this.numPortNo.TabIndex = 1;
-            this.numPortNo.Value = new decimal(new int[] {
-            502,
-            0,
-            0,
-            0});
             // 
             // frMain
             // 
@@ -392,11 +518,16 @@
             this.splMain.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numStation)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numStation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -420,15 +551,24 @@
         private System.Windows.Forms.TextBox txtArea;
         private System.Windows.Forms.Button btnSuspend;
         private System.Windows.Forms.Button btnScan;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Address;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
         private System.Windows.Forms.NumericUpDown numStation;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label labStatus;
         private System.Windows.Forms.NumericUpDown numPortNo;
         private System.Windows.Forms.TextBox txtIPAdr;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button btnFlash;
+        private System.Windows.Forms.CheckBox ckAlais;
+        private System.Windows.Forms.ComboBox cbFileName;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox ckHex;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numScanCycle;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Address;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
     }
 }
 

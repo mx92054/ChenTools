@@ -67,6 +67,7 @@
     <Compile Include="PortEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegAlais.cs" />
     <EmbeddedResource Include="frMain.resx">
       <DependentUpon>frMain.cs</DependentUpon>
     </EmbeddedResource>

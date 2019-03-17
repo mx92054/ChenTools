@@ -67,6 +67,22 @@ namespace Modbus_Tools
         }
     }
 
+    class WrReg_Coil
+    {
+        public ushort adr { get; set; }
+        public short val { get; set; }
+        public int cmd { get; set; }
+        public WrReg_Coil(int nCmd = 0, ushort usAdr = 0, short sVal = 0)
+        {
+            cmd = nCmd;
+            adr = usAdr;
+            val = sVal;
+        }
+    }
+
+    /// <summary>
+    /// 设备连接类
+    /// </summary>
     [Serializable]
     class Equipment
     {
@@ -77,9 +93,13 @@ namespace Modbus_Tools
         public int m_nIPPort;       //tcp端口号
 
         public int m_nFunc;         //功能号
-        public string m_sArea;      //读取范围定义
-        public string m_sLine;
-        public int m_nStation;
+        public string[] m_sArea;      //读取范围定义
+        public int m_nStation;       //主机地址
+
+        public string sAlaisFile;   //注释文件名
+        public bool bAlais;         //注释是否启用
+        public int m_nCycle;
+        public bool bHex;
 
         [NonSerialized]
         public int nSucc;   //成功通信次数
@@ -113,6 +133,9 @@ namespace Modbus_Tools
         [NonSerialized]
         Thread task;
 
+        [NonSerialized]
+        Queue<WrReg_Coil> queue;
+
         /// <summary>
         /// 初始化函数
         /// </summary>
@@ -125,7 +148,16 @@ namespace Modbus_Tools
             m_nIPPort = 502;
 
             m_nFunc = 0;
-            m_sArea = "0-10,10-20";
+
+            m_sArea = new string[4];
+            for (int i = 0; i < 4; i++)
+                m_sArea[i] = "0-99";
+
+            sAlaisFile = "";
+            bAlais = false;
+
+            m_nCycle = 500;
+            bHex = false;
         }
 
         /// <summary>
@@ -186,6 +218,8 @@ namespace Modbus_Tools
             task.IsBackground = true;
             bWorking = true;
             task.Start(this);
+
+            queue = new Queue<WrReg_Coil>();
         }
 
         /// <summary>
@@ -207,6 +241,19 @@ namespace Modbus_Tools
                 {
                     if (eq.m_nProcotol == 2)
                     {
+                        //write register
+                        if (eq.queue.Count > 0)
+                        {
+
+                            WrReg_Coil node = eq.queue.Dequeue();
+                            bool val = (node.val != 0);
+                            if (node.cmd == 0)
+                                eq.tcp_svr.WriteSingleCoil((byte)eq.m_nStation, node.adr, val);
+                            if (node.cmd == 2)
+                                eq.tcp_svr.WriteSingleRegister((byte)eq.m_nStation, node.adr, node.val);
+                        }
+
+                        //read register
                         switch (eq.m_nFunc)
                         {
                             case 0:
@@ -225,6 +272,19 @@ namespace Modbus_Tools
                     }
                     else
                     {
+                        //write register
+                        if (eq.queue.Count > 0)
+                        {
+
+                            WrReg_Coil node = eq.queue.Dequeue();
+                            bool val = (node.val != 0);
+                            if (node.cmd == 0)
+                                eq.ser_svr.WriteSingleCoil((byte)eq.m_nStation, node.adr, val);
+                            if (node.cmd == 2)
+                                eq.ser_svr.WriteSingleRegister((byte)eq.m_nStation, node.adr, node.val);
+                        }
+
+                        //read register
                         switch (eq.m_nFunc)
                         {
                             case 0:
@@ -250,6 +310,25 @@ namespace Modbus_Tools
             }
         }
 
+        public void In_Queue(int nIndex, short uVal)
+        {
+            int counter = 0;
+
+            for (int i = 0; i < m_scanArea.Count; i++)
+                for (int j = 0; j < m_nRWFlag[i].Length; j++)
+                {
+                    if (m_nRWFlag[i][j] == 1)
+                    {
+                        if (counter++ == nIndex)
+                        {
+                            WrReg_Coil wr = new WrReg_Coil(m_nFunc, (ushort)(m_scanArea[i].start_adr + j), uVal);
+                            queue.Enqueue(wr);
+                            return;
+                        }
+                    }
+                }
+        }
+
 
         /// <summary>+
         /// 对读写区域的字符串进行处理
@@ -259,12 +338,11 @@ namespace Modbus_Tools
         {
             string[] tmp;
             int x, y;
-            m_sLine = "Preocess Result:";
             m_listArea = new List<adr_area>();
 
             try
             {
-                string[] astr = m_sArea.Split(',');
+                string[] astr = m_sArea[m_nFunc].Split(',');
                 foreach (string s in astr)
                 {
                     tmp = s.Split('-');
