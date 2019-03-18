@@ -132,7 +132,7 @@ namespace Modbus_Tools
 
         private void btnScan_Click(object sender, EventArgs e)
         {
-            dataView.Rows.Clear();
+            timer1.Enabled = false;
 
             svr.m_nFunc = lstFunc.SelectedIndex;
             svr.m_sArea[svr.m_nFunc] = txtArea.Text;
@@ -141,7 +141,8 @@ namespace Modbus_Tools
             if (!svr.ProcessFunc())
                 return;
 
-            
+            dataView.Rows.Clear();
+           
             for(int i=0 ; i < svr.m_scanArea.Count; i++)
                 for (int j = 0; j < svr.m_nRWFlag[i].Length; j++)
                 {
@@ -246,7 +247,8 @@ namespace Modbus_Tools
             if (!ckAlais.Checked || cbFileName.SelectedIndex < 0)
                 return;
 
-            rAlais.ReadCSVFile(cbFileName.SelectedItem.ToString());
+            svr.sAlaisFile = cbFileName.SelectedItem.ToString();
+            rAlais.ReadCSVFile(svr.sAlaisFile);
 
             int counter = 0;
             for (int i = 0; i < svr.m_scanArea.Count; i++)
@@ -274,6 +276,11 @@ namespace Modbus_Tools
         {
             svr.m_nCycle = (int)numScanCycle.Value;
             timer1.Interval = svr.m_nCycle;
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -29,7 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frMain));
             this.splMain = new System.Windows.Forms.SplitContainer();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.ckHex = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numScanCycle = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnFlash = new System.Windows.Forms.Button();
+            this.ckAlais = new System.Windows.Forms.CheckBox();
+            this.cbFileName = new System.Windows.Forms.ComboBox();
             this.labStatus = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numStation = new System.Windows.Forms.NumericUpDown();
@@ -51,31 +61,25 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbProcotol = new System.Windows.Forms.ComboBox();
             this.dataView = new System.Windows.Forms.DataGridView();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cbFileName = new System.Windows.Forms.ComboBox();
-            this.ckAlais = new System.Windows.Forms.CheckBox();
-            this.btnFlash = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numScanCycle = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.ckHex = new System.Windows.Forms.CheckBox();
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.picLogo = new System.Windows.Forms.PictureBox();
+            this.btnExit = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
             this.splMain.Panel1.SuspendLayout();
             this.splMain.Panel2.SuspendLayout();
             this.splMain.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numStation)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataView)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // splMain
@@ -88,6 +92,8 @@
             // 
             // splMain.Panel1
             // 
+            this.splMain.Panel1.Controls.Add(this.picLogo);
+            this.splMain.Panel1.Controls.Add(this.btnExit);
             this.splMain.Panel1.Controls.Add(this.groupBox4);
             this.splMain.Panel1.Controls.Add(this.groupBox3);
             this.splMain.Panel1.Controls.Add(this.labStatus);
@@ -103,10 +109,117 @@
             this.splMain.SplitterWidth = 2;
             this.splMain.TabIndex = 0;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.ckHex);
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.numScanCycle);
+            this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Location = new System.Drawing.Point(12, 598);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(200, 89);
+            this.groupBox4.TabIndex = 4;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "显示参数";
+            // 
+            // ckHex
+            // 
+            this.ckHex.AutoSize = true;
+            this.ckHex.Location = new System.Drawing.Point(71, 62);
+            this.ckHex.Name = "ckHex";
+            this.ckHex.Size = new System.Drawing.Size(123, 21);
+            this.ckHex.TabIndex = 1;
+            this.ckHex.Text = "十六进制显示";
+            this.ckHex.UseVisualStyleBackColor = true;
+            this.ckHex.CheckedChanged += new System.EventHandler(this.ckHex_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 59);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(0, 17);
+            this.label3.TabIndex = 5;
+            // 
+            // numScanCycle
+            // 
+            this.numScanCycle.Location = new System.Drawing.Point(93, 25);
+            this.numScanCycle.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numScanCycle.Minimum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.numScanCycle.Name = "numScanCycle";
+            this.numScanCycle.Size = new System.Drawing.Size(101, 24);
+            this.numScanCycle.TabIndex = 0;
+            this.numScanCycle.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.numScanCycle.ValueChanged += new System.EventHandler(this.numScanCycle_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(15, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "扫描时间";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnFlash);
+            this.groupBox3.Controls.Add(this.ckAlais);
+            this.groupBox3.Controls.Add(this.cbFileName);
+            this.groupBox3.Location = new System.Drawing.Point(12, 482);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(200, 101);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "变量注释";
+            // 
+            // btnFlash
+            // 
+            this.btnFlash.Enabled = false;
+            this.btnFlash.Location = new System.Drawing.Point(119, 65);
+            this.btnFlash.Name = "btnFlash";
+            this.btnFlash.Size = new System.Drawing.Size(75, 23);
+            this.btnFlash.TabIndex = 2;
+            this.btnFlash.Text = "刷新";
+            this.btnFlash.UseVisualStyleBackColor = true;
+            this.btnFlash.Click += new System.EventHandler(this.btnFlash_Click);
+            // 
+            // ckAlais
+            // 
+            this.ckAlais.AutoSize = true;
+            this.ckAlais.Location = new System.Drawing.Point(9, 67);
+            this.ckAlais.Name = "ckAlais";
+            this.ckAlais.Size = new System.Drawing.Size(59, 21);
+            this.ckAlais.TabIndex = 1;
+            this.ckAlais.Text = "启用";
+            this.ckAlais.UseVisualStyleBackColor = true;
+            this.ckAlais.CheckedChanged += new System.EventHandler(this.ckAlais_CheckedChanged);
+            // 
+            // cbFileName
+            // 
+            this.cbFileName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbFileName.FormattingEnabled = true;
+            this.cbFileName.Location = new System.Drawing.Point(9, 23);
+            this.cbFileName.Name = "cbFileName";
+            this.cbFileName.Size = new System.Drawing.Size(185, 25);
+            this.cbFileName.TabIndex = 0;
+            // 
             // labStatus
             // 
             this.labStatus.AutoSize = true;
-            this.labStatus.Location = new System.Drawing.Point(15, 774);
+            this.labStatus.Location = new System.Drawing.Point(146, 700);
             this.labStatus.Name = "labStatus";
             this.labStatus.Size = new System.Drawing.Size(32, 17);
             this.labStatus.TabIndex = 2;
@@ -143,7 +256,7 @@
             0});
             this.numStation.Name = "numStation";
             this.numStation.Size = new System.Drawing.Size(102, 24);
-            this.numStation.TabIndex = 10;
+            this.numStation.TabIndex = 1;
             this.numStation.Value = new decimal(new int[] {
             1,
             0,
@@ -165,7 +278,7 @@
             this.btnSuspend.Location = new System.Drawing.Point(119, 231);
             this.btnSuspend.Name = "btnSuspend";
             this.btnSuspend.Size = new System.Drawing.Size(75, 23);
-            this.btnSuspend.TabIndex = 8;
+            this.btnSuspend.TabIndex = 4;
             this.btnSuspend.Text = "暂停";
             this.btnSuspend.UseVisualStyleBackColor = true;
             this.btnSuspend.Click += new System.EventHandler(this.btnSuspend_Click);
@@ -176,7 +289,7 @@
             this.btnScan.Location = new System.Drawing.Point(6, 231);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(75, 23);
-            this.btnScan.TabIndex = 7;
+            this.btnScan.TabIndex = 3;
             this.btnScan.Text = "开始";
             this.btnScan.UseVisualStyleBackColor = true;
             this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
@@ -196,7 +309,7 @@
             this.txtArea.Multiline = true;
             this.txtArea.Name = "txtArea";
             this.txtArea.Size = new System.Drawing.Size(188, 72);
-            this.txtArea.TabIndex = 1;
+            this.txtArea.TabIndex = 2;
             // 
             // lstFunc
             // 
@@ -250,7 +363,7 @@
             0});
             this.numPortNo.Name = "numPortNo";
             this.numPortNo.Size = new System.Drawing.Size(102, 24);
-            this.numPortNo.TabIndex = 1;
+            this.numPortNo.TabIndex = 2;
             this.numPortNo.Value = new decimal(new int[] {
             502,
             0,
@@ -370,117 +483,6 @@
             this.dataView.TabIndex = 0;
             this.dataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellEndEdit);
             // 
-            // timer1
-            // 
-            this.timer1.Interval = 500;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.btnFlash);
-            this.groupBox3.Controls.Add(this.ckAlais);
-            this.groupBox3.Controls.Add(this.cbFileName);
-            this.groupBox3.Location = new System.Drawing.Point(12, 482);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(200, 101);
-            this.groupBox3.TabIndex = 1;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "变量注释";
-            // 
-            // cbFileName
-            // 
-            this.cbFileName.FormattingEnabled = true;
-            this.cbFileName.Location = new System.Drawing.Point(9, 23);
-            this.cbFileName.Name = "cbFileName";
-            this.cbFileName.Size = new System.Drawing.Size(185, 25);
-            this.cbFileName.TabIndex = 1;
-            // 
-            // ckAlais
-            // 
-            this.ckAlais.AutoSize = true;
-            this.ckAlais.Location = new System.Drawing.Point(9, 67);
-            this.ckAlais.Name = "ckAlais";
-            this.ckAlais.Size = new System.Drawing.Size(59, 21);
-            this.ckAlais.TabIndex = 1;
-            this.ckAlais.Text = "启用";
-            this.ckAlais.UseVisualStyleBackColor = true;
-            this.ckAlais.CheckedChanged += new System.EventHandler(this.ckAlais_CheckedChanged);
-            // 
-            // btnFlash
-            // 
-            this.btnFlash.Enabled = false;
-            this.btnFlash.Location = new System.Drawing.Point(119, 65);
-            this.btnFlash.Name = "btnFlash";
-            this.btnFlash.Size = new System.Drawing.Size(75, 23);
-            this.btnFlash.TabIndex = 1;
-            this.btnFlash.Text = "刷新";
-            this.btnFlash.UseVisualStyleBackColor = true;
-            this.btnFlash.Click += new System.EventHandler(this.btnFlash_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.ckHex);
-            this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Controls.Add(this.numScanCycle);
-            this.groupBox4.Controls.Add(this.label2);
-            this.groupBox4.Location = new System.Drawing.Point(12, 598);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(200, 89);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "显示参数";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 29);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "扫描时间";
-            // 
-            // numScanCycle
-            // 
-            this.numScanCycle.Location = new System.Drawing.Point(93, 25);
-            this.numScanCycle.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numScanCycle.Minimum = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
-            this.numScanCycle.Name = "numScanCycle";
-            this.numScanCycle.Size = new System.Drawing.Size(101, 24);
-            this.numScanCycle.TabIndex = 1;
-            this.numScanCycle.Value = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this.numScanCycle.ValueChanged += new System.EventHandler(this.numScanCycle_ValueChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 59);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(0, 17);
-            this.label3.TabIndex = 5;
-            // 
-            // ckHex
-            // 
-            this.ckHex.AutoSize = true;
-            this.ckHex.Location = new System.Drawing.Point(71, 62);
-            this.ckHex.Name = "ckHex";
-            this.ckHex.Size = new System.Drawing.Size(123, 21);
-            this.ckHex.TabIndex = 4;
-            this.ckHex.Text = "十六进制显示";
-            this.ckHex.UseVisualStyleBackColor = true;
-            this.ckHex.CheckedChanged += new System.EventHandler(this.ckHex_CheckedChanged);
-            // 
             // Address
             // 
             this.Address.HeaderText = "地址";
@@ -501,12 +503,39 @@
             this.Desc.ReadOnly = true;
             this.Desc.Width = 300;
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // picLogo
+            // 
+            this.picLogo.Image = global::Modbus_Tools.Properties.Resources.idsse;
+            this.picLogo.Location = new System.Drawing.Point(12, 693);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(93, 95);
+            this.picLogo.TabIndex = 1;
+            this.picLogo.TabStop = false;
+            // 
+            // btnExit
+            // 
+            this.btnExit.BackgroundImage = global::Modbus_Tools.Properties.Resources.system_log_out;
+            this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnExit.Location = new System.Drawing.Point(137, 724);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 64);
+            this.btnExit.TabIndex = 5;
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // frMain
             // 
+            this.AcceptButton = this.btnScan;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(673, 800);
             this.Controls.Add(this.splMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frMain";
             this.Text = "Modbus Tools  (Written by chenming  chenm@idsse.ac.cn)";
@@ -516,6 +545,11 @@
             this.splMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).EndInit();
             this.splMain.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numStation)).EndInit();
@@ -523,11 +557,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -569,6 +599,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Address;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
         private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
+        private System.Windows.Forms.PictureBox picLogo;
+        private System.Windows.Forms.Button btnExit;
     }
 }
 
