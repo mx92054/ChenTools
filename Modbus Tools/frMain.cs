@@ -32,7 +32,7 @@ namespace Modbus_Tools
             }
             catch (Exception ex)
             {
-                MessageBox.Show("初始设置函数出现异常，采用默认配置！");
+                MessageBox.Show("初始设置函数出现异常，采用默认配置！" + ex.Message);
                 svr = new Equipment();
             }
 
@@ -160,6 +160,13 @@ namespace Modbus_Tools
                         dataView.Rows[no].Cells[0].Value = adr.ToString();
                         if (ckAlais.Checked)
                             dataView.Rows[no].Cells[2].Value = rAlais.GetAlais(adr);
+
+                        if ((no / 5) % 2 == 0)
+                        {
+                            this.dataView.Rows[no].Cells[0].Style.BackColor = Color.LightGray;
+                            this.dataView.Rows[no].Cells[1].Style.BackColor = Color.LightBlue;
+                            this.dataView.Rows[no].Cells[2].Style.BackColor = Color.LightGray;
+                        }
                     }
                 }
 

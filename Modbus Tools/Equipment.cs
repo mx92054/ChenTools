@@ -131,9 +131,6 @@ namespace Modbus_Tools
         public bool bWorking;
 
         [NonSerialized]
-        Thread task;
-
-        [NonSerialized]
         Queue<WrReg_Coil> queue;
 
         [NonSerialized]

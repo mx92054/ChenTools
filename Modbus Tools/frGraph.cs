@@ -141,7 +141,7 @@ namespace Modbus_Tools
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("A error happend when saving data!", "Alarm", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("A error happend when saving data! " + ex.Message, "Alarm", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
 
