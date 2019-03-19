@@ -606,11 +606,8 @@ namespace Modbus_Tools
         }
     }
 
-
     class SerialHelper
     {
-
-
         public static void ReserializeMethod(ref Equipment eq)
         {
             //反序列化
@@ -620,7 +617,6 @@ namespace Modbus_Tools
                 eq = bf.Deserialize(fs) as Equipment;
             }
         }
-
 
         public static void SerializeMethod(Equipment listPers)
         {
