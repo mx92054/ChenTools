@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frMain));
             this.splMain = new System.Windows.Forms.SplitContainer();
+            this.picLogo = new System.Windows.Forms.PictureBox();
+            this.btnExit = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.ckHex = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -65,12 +67,12 @@
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.picLogo = new System.Windows.Forms.PictureBox();
-            this.btnExit = new System.Windows.Forms.Button();
+            this.labErr = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
             this.splMain.Panel1.SuspendLayout();
             this.splMain.Panel2.SuspendLayout();
             this.splMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).BeginInit();
             this.groupBox3.SuspendLayout();
@@ -79,7 +81,6 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // splMain
@@ -92,6 +93,7 @@
             // 
             // splMain.Panel1
             // 
+            this.splMain.Panel1.Controls.Add(this.labErr);
             this.splMain.Panel1.Controls.Add(this.picLogo);
             this.splMain.Panel1.Controls.Add(this.btnExit);
             this.splMain.Panel1.Controls.Add(this.groupBox4);
@@ -104,10 +106,30 @@
             // splMain.Panel2
             // 
             this.splMain.Panel2.Controls.Add(this.dataView);
-            this.splMain.Size = new System.Drawing.Size(673, 800);
+            this.splMain.Size = new System.Drawing.Size(673, 814);
             this.splMain.SplitterDistance = 216;
             this.splMain.SplitterWidth = 2;
             this.splMain.TabIndex = 0;
+            // 
+            // picLogo
+            // 
+            this.picLogo.Image = global::Modbus_Tools.Properties.Resources.idsse;
+            this.picLogo.Location = new System.Drawing.Point(12, 719);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(93, 95);
+            this.picLogo.TabIndex = 1;
+            this.picLogo.TabStop = false;
+            // 
+            // btnExit
+            // 
+            this.btnExit.BackgroundImage = global::Modbus_Tools.Properties.Resources.system_log_out;
+            this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnExit.Location = new System.Drawing.Point(138, 747);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 64);
+            this.btnExit.TabIndex = 5;
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // groupBox4
             // 
@@ -125,7 +147,7 @@
             // ckHex
             // 
             this.ckHex.AutoSize = true;
-            this.ckHex.Location = new System.Drawing.Point(71, 62);
+            this.ckHex.Location = new System.Drawing.Point(16, 62);
             this.ckHex.Name = "ckHex";
             this.ckHex.Size = new System.Drawing.Size(123, 21);
             this.ckHex.TabIndex = 1;
@@ -167,7 +189,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 29);
+            this.label2.Location = new System.Drawing.Point(13, 29);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(64, 17);
             this.label2.TabIndex = 4;
@@ -219,7 +241,7 @@
             // labStatus
             // 
             this.labStatus.AutoSize = true;
-            this.labStatus.Location = new System.Drawing.Point(146, 700);
+            this.labStatus.Location = new System.Drawing.Point(128, 719);
             this.labStatus.Name = "labStatus";
             this.labStatus.Size = new System.Drawing.Size(32, 17);
             this.labStatus.TabIndex = 2;
@@ -479,8 +501,9 @@
             this.dataView.Margin = new System.Windows.Forms.Padding(2);
             this.dataView.Name = "dataView";
             this.dataView.RowTemplate.Height = 20;
-            this.dataView.Size = new System.Drawing.Size(455, 800);
+            this.dataView.Size = new System.Drawing.Size(455, 814);
             this.dataView.TabIndex = 0;
+            this.dataView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellDoubleClick);
             this.dataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellEndEdit);
             // 
             // Address
@@ -508,32 +531,22 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // picLogo
+            // labErr
             // 
-            this.picLogo.Image = global::Modbus_Tools.Properties.Resources.idsse;
-            this.picLogo.Location = new System.Drawing.Point(12, 693);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(93, 95);
-            this.picLogo.TabIndex = 1;
-            this.picLogo.TabStop = false;
-            // 
-            // btnExit
-            // 
-            this.btnExit.BackgroundImage = global::Modbus_Tools.Properties.Resources.system_log_out;
-            this.btnExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnExit.Location = new System.Drawing.Point(137, 724);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(75, 64);
-            this.btnExit.TabIndex = 5;
-            this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            this.labErr.AutoSize = true;
+            this.labErr.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.labErr.Location = new System.Drawing.Point(13, 694);
+            this.labErr.Name = "labErr";
+            this.labErr.Size = new System.Drawing.Size(72, 17);
+            this.labErr.TabIndex = 6;
+            this.labErr.Text = "No error";
             // 
             // frMain
             // 
             this.AcceptButton = this.btnScan;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(673, 800);
+            this.ClientSize = new System.Drawing.Size(673, 814);
             this.Controls.Add(this.splMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -545,6 +558,7 @@
             this.splMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).EndInit();
             this.splMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numScanCycle)).EndInit();
@@ -557,7 +571,6 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPortNo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -601,6 +614,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
         private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.Label labErr;
     }
 }
 

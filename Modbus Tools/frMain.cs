@@ -11,9 +11,13 @@ namespace Modbus_Tools
 {
     public partial class frMain : Form
     {
-        private Equipment svr;
+        public Equipment svr;
         private bool bScan;
         private RegAlais rAlais;
+        private frGraph fp;
+        private int err_disp_timer ;
+        private int err_couter;
+        private int ticks = 0;
 
         public frMain()
         {
@@ -44,6 +48,7 @@ namespace Modbus_Tools
 
             txtIPAdr.Text = svr.m_sIPAddress;
             numPortNo.Value = svr.m_nIPPort;
+            numStation.Value = svr.m_nStation;
 
             lstFunc.SelectedIndex = svr.m_nFunc;
             txtArea.Text = svr.m_sArea[svr.m_nFunc];
@@ -84,6 +89,8 @@ namespace Modbus_Tools
             timer1.Interval = svr.m_nCycle;
             numScanCycle.Value = svr.m_nCycle;
             ckHex.Checked = svr.bHex;
+
+            err_disp_timer = 0;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -158,6 +165,7 @@ namespace Modbus_Tools
 
             svr.MB_Scan();
 
+            err_couter = 0;
             timer1.Enabled = true;
             bScan = true;
         }
@@ -166,17 +174,39 @@ namespace Modbus_Tools
         {
             int nCur = 0;
 
-            for (int i = 0; i < svr.m_scanArea.Count; i++)
-                for (int j = 0; j < svr.m_nRWFlag[i].Length; j++)
+            if (!svr.ScanOnce())
+            {
+                labErr.Text = svr.err_msg;
+                err_disp_timer = 10000;
+                err_couter++;
+                if (err_couter > 3)
                 {
-                    if (svr.m_nRWFlag[i][j] == 1)
-                    {
-                        if ( svr.m_nFunc > 1 )
-                            dataView.Rows[nCur++].Cells[1].Value = svr.m_sValue[i][j].ToString(svr.bHex?"X4":"");
-                        else
-                            dataView.Rows[nCur++].Cells[1].Value = svr.m_bValue[i][j].ToString();
-                    }
+                    timer1.Enabled = false;
                 }
+            }
+            else
+            {
+                if (err_disp_timer > 0)
+                {
+                    err_disp_timer -= timer1.Interval;
+                    if (err_disp_timer <= 0)
+                        labErr.Text = "No error";
+                }  
+                
+                err_couter = 0;
+                ticks++;
+                for (int i = 0; i < svr.m_scanArea.Count; i++)
+                    for (int j = 0; j < svr.m_nRWFlag[i].Length; j++)
+                    {
+                        if (svr.m_nRWFlag[i][j] == 1)
+                        {
+                            if (svr.m_nFunc > 1)
+                                dataView.Rows[nCur++].Cells[1].Value = svr.m_sValue[i][j].ToString(svr.bHex ? "X4" : "");
+                            else
+                                dataView.Rows[nCur++].Cells[1].Value = svr.m_bValue[i][j].ToString();
+                        }
+                    }
+            }
             labStatus.Text = svr.nSucc.ToString() + "/" + svr.nFail.ToString();
         }
 
@@ -281,6 +311,17 @@ namespace Modbus_Tools
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void dataView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            fp = new frGraph();
+            fp.parentFrm = this;
+
+            int addr = Int32.Parse(dataView.Rows[e.RowIndex].Cells[0].Value.ToString());
+            fp.StartDraw(addr,svr.m_nCycle);
+            fp.ticks = ticks;
+            fp.Show();
         }
     }
 }

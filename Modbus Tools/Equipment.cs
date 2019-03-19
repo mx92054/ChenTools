@@ -17,7 +17,7 @@ using WSMBT;
 
 namespace Modbus_Tools
 {
-    class adr_area : IComparable<adr_area>
+    public class adr_area : IComparable<adr_area>
     {
         private ushort adr1;
         private ushort adr2;
@@ -67,7 +67,7 @@ namespace Modbus_Tools
         }
     }
 
-    class WrReg_Coil
+    public class WrReg_Coil
     {
         public ushort adr { get; set; }
         public short val { get; set; }
@@ -84,7 +84,7 @@ namespace Modbus_Tools
     /// 设备连接类
     /// </summary>
     [Serializable]
-    class Equipment
+    public class Equipment
     {
         public int m_nProcotol;     //协议类型
         public string m_sSerPort;   //串口端口号
@@ -135,6 +135,9 @@ namespace Modbus_Tools
 
         [NonSerialized]
         Queue<WrReg_Coil> queue;
+
+        [NonSerialized]
+        public string err_msg;
 
         /// <summary>
         /// 初始化函数
@@ -211,15 +214,15 @@ namespace Modbus_Tools
         /// </summary>
         public void MB_Scan()
         {
-            if (task != null)
-                task.Abort();
-
+            /*
             task = new Thread(new ParameterizedThreadStart(Scan_Task));
             task.IsBackground = true;
             bWorking = true;
             task.Start(this);
+            */
 
             queue = new Queue<WrReg_Coil>();
+            err_msg = "No error";
         }
 
         /// <summary>
@@ -248,26 +251,28 @@ namespace Modbus_Tools
                             WrReg_Coil node = eq.queue.Dequeue();
                             bool val = (node.val != 0);
                             if (node.cmd == 0)
-                                eq.tcp_svr.WriteSingleCoil((byte)eq.m_nStation, node.adr, val);
+                                tres = eq.tcp_svr.WriteSingleCoil((byte)eq.m_nStation, node.adr, val);
                             if (node.cmd == 2)
-                                eq.tcp_svr.WriteSingleRegister((byte)eq.m_nStation, node.adr, node.val);
+                                tres = eq.tcp_svr.WriteSingleRegister((byte)eq.m_nStation, node.adr, node.val);
                         }
-
-                        //read register
-                        switch (eq.m_nFunc)
+                        else
                         {
-                            case 0:
-                                tres = eq.tcp_svr.ReadCoils((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
-                                break;
-                            case 1:
-                                tres = eq.tcp_svr.ReadDiscreteInputs((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
-                                break;
-                            case 2:
-                                tres = eq.tcp_svr.ReadHoldingRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
-                                break;
-                            case 3:
-                                tres = eq.tcp_svr.ReadInputRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
-                                break;
+                            //read register
+                            switch (eq.m_nFunc)
+                            {
+                                case 0:
+                                    tres = eq.tcp_svr.ReadCoils((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                    break;
+                                case 1:
+                                    tres = eq.tcp_svr.ReadDiscreteInputs((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                    break;
+                                case 2:
+                                    tres = eq.tcp_svr.ReadHoldingRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                    break;
+                                case 3:
+                                    tres = eq.tcp_svr.ReadInputRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                    break;
+                            }
                         }
                     }
                     else
@@ -279,26 +284,28 @@ namespace Modbus_Tools
                             WrReg_Coil node = eq.queue.Dequeue();
                             bool val = (node.val != 0);
                             if (node.cmd == 0)
-                                eq.ser_svr.WriteSingleCoil((byte)eq.m_nStation, node.adr, val);
+                                sres = eq.ser_svr.WriteSingleCoil((byte)eq.m_nStation, node.adr, val);
                             if (node.cmd == 2)
-                                eq.ser_svr.WriteSingleRegister((byte)eq.m_nStation, node.adr, node.val);
+                                sres = eq.ser_svr.WriteSingleRegister((byte)eq.m_nStation, node.adr, node.val);
                         }
-
-                        //read register
-                        switch (eq.m_nFunc)
+                        else
                         {
-                            case 0:
-                                sres = eq.ser_svr.ReadCoils((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
-                                break;
-                            case 1:
-                                sres = eq.ser_svr.ReadDiscreteInputs((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
-                                break;
-                            case 2:
-                                sres = eq.ser_svr.ReadHoldingRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
-                                break;
-                            case 3:
-                                sres = eq.ser_svr.ReadInputRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
-                                break;
+                            //read register
+                            switch (eq.m_nFunc)
+                            {
+                                case 0:
+                                    sres = eq.ser_svr.ReadCoils((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                    break;
+                                case 1:
+                                    sres = eq.ser_svr.ReadDiscreteInputs((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_bValue[Index]);
+                                    break;
+                                case 2:
+                                    sres = eq.ser_svr.ReadHoldingRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                    break;
+                                case 3:
+                                    sres = eq.ser_svr.ReadInputRegisters((byte)eq.m_nStation, eq.m_scanArea[Index].start_adr, (ushort)eq.m_scanArea[Index].length, eq.m_sValue[Index]);
+                                    break;
+                            }
                         }
                     }
 
@@ -310,25 +317,134 @@ namespace Modbus_Tools
             }
         }
 
+        public bool ScanOnce()
+        {
+            bool bRet = true ;
+
+            WSMBS.Result sres;
+            WSMBT.Result tres;
+
+            sres = WSMBS.Result.SUCCESS;
+            tres = WSMBT.Result.SUCCESS;
+            for (int Index = 0; Index < m_scanArea.Count; Index++)
+            {
+                if (m_nProcotol == 2)
+                {
+                    //write register
+                    if (queue.Count > 0)
+                    {
+
+                        WrReg_Coil node = queue.Dequeue();
+                        bool val = (node.val != 0);
+                        if (node.cmd == 0)
+                            tres = tcp_svr.WriteSingleCoil((byte)m_nStation, node.adr, val);
+                        if (node.cmd == 2)
+                            tres = tcp_svr.WriteSingleRegister((byte)m_nStation, node.adr, node.val);
+                    }
+                    else
+                    {
+                        //read register
+                        switch (m_nFunc)
+                        {
+                            case 0:
+                                tres = tcp_svr.ReadCoils((byte)m_nStation, m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_bValue[Index]);
+                                break;
+                            case 1:
+                                tres = tcp_svr.ReadDiscreteInputs((byte)m_nStation, m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_bValue[Index]);
+                                break;
+                            case 2:
+                                tres = tcp_svr.ReadHoldingRegisters((byte)m_nStation, m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_sValue[Index]);
+                                break;
+                            case 3:
+                                tres = tcp_svr.ReadInputRegisters((byte)m_nStation, m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_sValue[Index]);
+                                break;
+                        }
+                    }
+                    if ( tres == WSMBT.Result.SUCCESS)
+                        nSucc++;
+                    else
+                    {
+                        nFail++;
+                        err_msg = tres.ToString();
+                        bRet = false;
+                    }
+                }
+                else
+                {
+                    //write register
+                    if (queue.Count > 0)
+                    {
+
+                        WrReg_Coil node = queue.Dequeue();
+                        bool val = (node.val != 0);
+                        if (node.cmd == 0)
+                            sres = ser_svr.WriteSingleCoil((byte)m_nStation, node.adr, val);
+                        if (node.cmd == 2)
+                            sres = ser_svr.WriteSingleRegister((byte)m_nStation, node.adr, node.val);
+                    }
+                    else
+                    {
+                        //read register
+                        switch (m_nFunc)
+                        {
+                            case 0:
+                                sres = ser_svr.ReadCoils((byte)m_nStation, m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_bValue[Index]);
+                                break;
+                            case 1:
+                                sres = ser_svr.ReadDiscreteInputs((byte)m_nStation,m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_bValue[Index]);
+                                break;
+                            case 2:
+                                sres = ser_svr.ReadHoldingRegisters((byte)m_nStation, m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_sValue[Index]);
+                                break;
+                            case 3:
+                                sres = ser_svr.ReadInputRegisters((byte)m_nStation, m_scanArea[Index].start_adr, (ushort)m_scanArea[Index].length, m_sValue[Index]);
+                                break;
+                        }
+                        if (sres == WSMBS.Result.SUCCESS )
+                            nSucc++;
+                        else
+                        {
+                            nFail++;
+                            err_msg = sres.ToString();
+                            bRet = false ;
+                        }                  
+                    }
+                }
+            }
+            return bRet ;
+        }
+
         public void In_Queue(int nIndex, short uVal)
         {
-            int counter = 0;
+            int grp = 0;
+            int offset = 0;
 
+            if ( FindPosintion(nIndex, ref grp, ref offset))
+            {
+                WrReg_Coil wr = new WrReg_Coil(m_nFunc, (ushort)(m_scanArea[grp].start_adr + offset), uVal);
+                queue.Enqueue(wr) ;
+            }
+        }
+
+
+        public bool FindPosintion(int nAddr, ref int nGrp, ref int nOffset)
+        {
             for (int i = 0; i < m_scanArea.Count; i++)
                 for (int j = 0; j < m_nRWFlag[i].Length; j++)
                 {
                     if (m_nRWFlag[i][j] == 1)
                     {
-                        if (counter++ == nIndex)
+                        if ((m_scanArea[i].start_adr + j) == nAddr)
                         {
-                            WrReg_Coil wr = new WrReg_Coil(m_nFunc, (ushort)(m_scanArea[i].start_adr + j), uVal);
-                            queue.Enqueue(wr);
-                            return;
+                            nGrp = i;
+                            nOffset = j;
+                            return true ;
                         }
                     }
                 }
-        }
 
+            return false;
+        }
 
         /// <summary>+
         /// 对读写区域的字符串进行处理
