@@ -114,6 +114,7 @@
             this.ClientSize = new System.Drawing.Size(1279, 633);
             this.Controls.Add(this.splitContainer1);
             this.Name = "frGraph";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "保持寄存器趋势曲线";
             this.Load += new System.EventHandler(this.frGraph_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);

@@ -317,6 +317,7 @@ namespace Modbus_Tools
         {
             fp = new frGraph();
             fp.parentFrm = this;
+            fp.Location = new Point(this.Location.X + this.Size.Width + 3, this.Location.Y);
 
             int addr = Int32.Parse(dataView.Rows[e.RowIndex].Cells[0].Value.ToString());
             fp.StartDraw(addr,svr.m_nCycle);

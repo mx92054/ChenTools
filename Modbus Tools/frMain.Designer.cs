@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frMain));
             this.splMain = new System.Windows.Forms.SplitContainer();
+            this.labErr = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -63,11 +64,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbProcotol = new System.Windows.Forms.ComboBox();
             this.dataView = new System.Windows.Forms.DataGridView();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.labErr = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
             this.splMain.Panel1.SuspendLayout();
             this.splMain.Panel2.SuspendLayout();
@@ -106,10 +106,20 @@
             // splMain.Panel2
             // 
             this.splMain.Panel2.Controls.Add(this.dataView);
-            this.splMain.Size = new System.Drawing.Size(673, 814);
+            this.splMain.Size = new System.Drawing.Size(563, 814);
             this.splMain.SplitterDistance = 216;
             this.splMain.SplitterWidth = 2;
             this.splMain.TabIndex = 0;
+            // 
+            // labErr
+            // 
+            this.labErr.AutoSize = true;
+            this.labErr.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.labErr.Location = new System.Drawing.Point(13, 694);
+            this.labErr.Name = "labErr";
+            this.labErr.Size = new System.Drawing.Size(72, 17);
+            this.labErr.TabIndex = 6;
+            this.labErr.Text = "No error";
             // 
             // picLogo
             // 
@@ -191,7 +201,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 29);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 17);
+            this.label2.Size = new System.Drawing.Size(72, 17);
             this.label2.TabIndex = 4;
             this.label2.Text = "扫描时间";
             // 
@@ -501,10 +511,15 @@
             this.dataView.Margin = new System.Windows.Forms.Padding(2);
             this.dataView.Name = "dataView";
             this.dataView.RowTemplate.Height = 20;
-            this.dataView.Size = new System.Drawing.Size(455, 814);
+            this.dataView.Size = new System.Drawing.Size(345, 814);
             this.dataView.TabIndex = 0;
             this.dataView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellDoubleClick);
             this.dataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellEndEdit);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 500;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Address
             // 
@@ -524,29 +539,14 @@
             this.Desc.HeaderText = "描述";
             this.Desc.Name = "Desc";
             this.Desc.ReadOnly = true;
-            this.Desc.Width = 300;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 500;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // labErr
-            // 
-            this.labErr.AutoSize = true;
-            this.labErr.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.labErr.Location = new System.Drawing.Point(13, 694);
-            this.labErr.Name = "labErr";
-            this.labErr.Size = new System.Drawing.Size(72, 17);
-            this.labErr.TabIndex = 6;
-            this.labErr.Text = "No error";
+            this.Desc.Width = 200;
             // 
             // frMain
             // 
             this.AcceptButton = this.btnScan;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(673, 814);
+            this.ClientSize = new System.Drawing.Size(563, 814);
             this.Controls.Add(this.splMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -609,12 +609,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numScanCycle;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Address;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
         private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label labErr;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Address;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
     }
 }
 

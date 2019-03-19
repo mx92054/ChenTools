@@ -27,3 +27,6 @@ F:\VcProj\Chen Modbus\Modbus Tools\bin\Debug\WSMBT.xml
 D:\08 MatProj\Modbus Tools\Modbus Tools\bin\Debug\WSMBS.xml
 D:\08 MatProj\Modbus Tools\Modbus Tools\bin\Debug\WSMBT.xml
 F:\VcProj\Chen Modbus\Modbus Tools\obj\Debug\Modbus_Tools.frGraph.resources
+G:\SBC\Chen Tools\Modbus Tools\bin\Debug\WSMBS.xml
+G:\SBC\Chen Tools\Modbus Tools\bin\Debug\WSMBT.xml
+G:\SBC\Chen Tools\Modbus Tools\obj\Debug\Modbus_Tools.frGraph.resources
