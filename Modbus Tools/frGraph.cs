@@ -48,6 +48,12 @@ namespace Modbus_Tools
             }
         }
 
+        public void SetCycle(int ntimerval)
+        {
+            timer1.Interval = ntimerval;
+        }
+            
+
         private void frGraph_Load(object sender, EventArgs e)
         {
             zd.Location = new Point(670, 67);

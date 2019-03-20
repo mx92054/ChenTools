@@ -181,7 +181,7 @@ namespace Modbus_Tools
         {
             int nCur = 0;
 
-            if (!svr.ScanOnce())
+/*            if (!svr.ScanOnce())
             {
                 labErr.Text = svr.err_msg;
                 err_disp_timer = 10000;
@@ -213,7 +213,23 @@ namespace Modbus_Tools
                                 dataView.Rows[nCur++].Cells[1].Value = svr.m_bValue[i][j].ToString();
                         }
                     }
-            }
+            }*/
+
+            ticks++;
+            for (int i = 0; i < svr.m_scanArea.Count; i++)
+                for (int j = 0; j < svr.m_nRWFlag[i].Length; j++)
+                {
+                    if (svr.m_nRWFlag[i][j] == 1)
+                    {
+                        if (svr.m_nFunc > 1)
+                            dataView.Rows[nCur++].Cells[1].Value = svr.m_sValue[i][j].ToString(svr.bHex ? "X4" : "");
+                        else
+                            dataView.Rows[nCur++].Cells[1].Value = svr.m_bValue[i][j].ToString();
+                    }
+                }
+
+            labErrTime.Text = svr.err_time;
+            labErr.Text = svr.err_msg;
             labStatus.Text = svr.nSucc.ToString() + "/" + svr.nFail.ToString();
         }
 
@@ -253,8 +269,9 @@ namespace Modbus_Tools
 
             try
             {
+                int address = Int32.Parse(dataView.Rows[e.RowIndex].Cells[0].Value.ToString());
                 short val = Int16.Parse(dataView.Rows[e.RowIndex].Cells[1].Value.ToString());
-                svr.In_Queue(e.RowIndex, val);
+                svr.In_Queue(address, val);
             }
             catch (Exception ex)
             {
@@ -313,6 +330,8 @@ namespace Modbus_Tools
         {
             svr.m_nCycle = (int)numScanCycle.Value;
             timer1.Interval = svr.m_nCycle;
+            if (fp != null)
+                fp.SetCycle(svr.m_nCycle);
         }
 
         private void btnExit_Click(object sender, EventArgs e)
