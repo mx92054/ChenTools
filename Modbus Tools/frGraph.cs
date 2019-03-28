@@ -186,5 +186,19 @@ namespace Modbus_Tools
             gp.CurveList.RemoveAt(lstGrp.SelectedIndex);
             lstGrp.Items.RemoveAt(lstGrp.SelectedIndex);
         }
+
+        private void btnSuspend_Click(object sender, EventArgs e)
+        {
+            if (timer1.Enabled)
+            {
+                timer1.Enabled = false;
+                btnSuspend.Text = "恢复";
+            }
+            else
+            {
+                timer1.Enabled = true;
+                btnSuspend.Text = "暂停";
+            }
+        }
     }
 }

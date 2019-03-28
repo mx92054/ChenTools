@@ -32,14 +32,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frGraph));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lstGrp = new System.Windows.Forms.ListBox();
+            this.lstAdr = new System.Windows.Forms.ListBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.zd = new ZedGraph.ZedGraphControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lstAdr = new System.Windows.Forms.ListBox();
-            this.lstGrp = new System.Windows.Forms.ListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.btnSuspend = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -68,6 +69,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnSuspend);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.lstGrp);
@@ -81,9 +83,47 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "曲线";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 319);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(72, 17);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "趋势曲线";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(72, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "地址选择";
+            // 
+            // lstGrp
+            // 
+            this.lstGrp.FormattingEnabled = true;
+            this.lstGrp.ItemHeight = 17;
+            this.lstGrp.Location = new System.Drawing.Point(6, 339);
+            this.lstGrp.Name = "lstGrp";
+            this.lstGrp.Size = new System.Drawing.Size(127, 123);
+            this.lstGrp.TabIndex = 2;
+            this.lstGrp.DoubleClick += new System.EventHandler(this.lstGrp_DoubleClick);
+            // 
+            // lstAdr
+            // 
+            this.lstAdr.FormattingEnabled = true;
+            this.lstAdr.ItemHeight = 17;
+            this.lstAdr.Location = new System.Drawing.Point(6, 41);
+            this.lstAdr.Name = "lstAdr";
+            this.lstAdr.Size = new System.Drawing.Size(127, 259);
+            this.lstAdr.TabIndex = 1;
+            this.lstAdr.DoubleClick += new System.EventHandler(this.lstAdr_DoubleClick);
+            // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(19, 506);
+            this.btnSave.Location = new System.Drawing.Point(19, 519);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(96, 39);
             this.btnSave.TabIndex = 1;
@@ -93,7 +133,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(19, 551);
+            this.btnClose.Location = new System.Drawing.Point(19, 564);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(96, 39);
             this.btnClose.TabIndex = 0;
@@ -116,43 +156,15 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // lstAdr
+            // btnSuspend
             // 
-            this.lstAdr.FormattingEnabled = true;
-            this.lstAdr.ItemHeight = 17;
-            this.lstAdr.Location = new System.Drawing.Point(6, 41);
-            this.lstAdr.Name = "lstAdr";
-            this.lstAdr.Size = new System.Drawing.Size(127, 293);
-            this.lstAdr.TabIndex = 1;
-            this.lstAdr.DoubleClick += new System.EventHandler(this.lstAdr_DoubleClick);
-            // 
-            // lstGrp
-            // 
-            this.lstGrp.FormattingEnabled = true;
-            this.lstGrp.ItemHeight = 17;
-            this.lstGrp.Location = new System.Drawing.Point(6, 360);
-            this.lstGrp.Name = "lstGrp";
-            this.lstGrp.Size = new System.Drawing.Size(127, 123);
-            this.lstGrp.TabIndex = 2;
-            this.lstGrp.DoubleClick += new System.EventHandler(this.lstGrp_DoubleClick);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "地址选择";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 340);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 17);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "趋势曲线";
+            this.btnSuspend.Location = new System.Drawing.Point(19, 474);
+            this.btnSuspend.Name = "btnSuspend";
+            this.btnSuspend.Size = new System.Drawing.Size(96, 39);
+            this.btnSuspend.TabIndex = 4;
+            this.btnSuspend.Text = "暂停";
+            this.btnSuspend.UseVisualStyleBackColor = true;
+            this.btnSuspend.Click += new System.EventHandler(this.btnSuspend_Click);
             // 
             // frGraph
             // 
@@ -187,6 +199,7 @@
         private System.Windows.Forms.ListBox lstGrp;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnSuspend;
 
     }
 }
