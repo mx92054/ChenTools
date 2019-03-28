@@ -134,6 +134,7 @@ namespace Modbus_Tools
             btnDisconnect.Enabled = false;
             btnScan.Enabled = false;
             btnSuspend.Enabled = false;
+            btnGraph.Enabled = false;
             bScan = false;
         }
 
@@ -174,6 +175,7 @@ namespace Modbus_Tools
 
             err_couter = 0;
             timer1.Enabled = true;
+            btnGraph.Enabled = true;
             bScan = true;
         }
 
@@ -339,14 +341,13 @@ namespace Modbus_Tools
             this.Close();
         }
 
-        private void dataView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void btnGraph_Click(object sender, EventArgs e)
         {
             fp = new frGraph();
             fp.parentFrm = this;
             fp.Location = new Point(this.Location.X + this.Size.Width + 3, this.Location.Y);
 
-            int addr = Int32.Parse(dataView.Rows[e.RowIndex].Cells[0].Value.ToString());
-            fp.StartDraw(addr,svr.m_nCycle);
+            fp.StartDraw(svr.m_nCycle);
             fp.ticks = ticks;
             fp.Show();
         }

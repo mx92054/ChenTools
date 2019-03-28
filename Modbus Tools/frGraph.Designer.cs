@@ -29,12 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frGraph));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.zd = new ZedGraph.ZedGraphControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lstAdr = new System.Windows.Forms.ListBox();
+            this.lstGrp = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -63,6 +68,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.lstGrp);
+            this.groupBox1.Controls.Add(this.lstAdr);
             this.groupBox1.Controls.Add(this.btnSave);
             this.groupBox1.Controls.Add(this.btnClose);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -74,7 +83,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(19, 23);
+            this.btnSave.Location = new System.Drawing.Point(19, 506);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(96, 39);
             this.btnSave.TabIndex = 1;
@@ -107,21 +116,61 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // lstAdr
+            // 
+            this.lstAdr.FormattingEnabled = true;
+            this.lstAdr.ItemHeight = 17;
+            this.lstAdr.Location = new System.Drawing.Point(6, 41);
+            this.lstAdr.Name = "lstAdr";
+            this.lstAdr.Size = new System.Drawing.Size(127, 293);
+            this.lstAdr.TabIndex = 1;
+            this.lstAdr.DoubleClick += new System.EventHandler(this.lstAdr_DoubleClick);
+            // 
+            // lstGrp
+            // 
+            this.lstGrp.FormattingEnabled = true;
+            this.lstGrp.ItemHeight = 17;
+            this.lstGrp.Location = new System.Drawing.Point(6, 360);
+            this.lstGrp.Name = "lstGrp";
+            this.lstGrp.Size = new System.Drawing.Size(127, 123);
+            this.lstGrp.TabIndex = 2;
+            this.lstGrp.DoubleClick += new System.EventHandler(this.lstGrp_DoubleClick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(72, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "地址选择";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 340);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(72, 17);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "趋势曲线";
+            // 
             // frGraph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1279, 633);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frGraph";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "保持寄存器趋势曲线";
+            this.Text = "趋势曲线";
             this.Load += new System.EventHandler(this.frGraph_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -134,6 +183,10 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.ListBox lstAdr;
+        private System.Windows.Forms.ListBox lstGrp;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
 
     }
 }

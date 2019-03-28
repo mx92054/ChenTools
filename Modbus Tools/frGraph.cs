@@ -27,23 +27,22 @@ namespace Modbus_Tools
             InitializeComponent();
         }
 
-        public void StartDraw( int Addr,int nCycle)
+        public void StartDraw(int nCycle)
         {
             cycle = nCycle;
-            address = Addr;
             switch (parentFrm.svr.m_nFunc)
             {
                 case 0:
-                    caption = "Coil " + address.ToString();
+                    caption = "Coil ";
                     break;
                 case 1:
-                    caption = "Directe " + address.ToString();
+                    caption = "Directe ";
                     break;
                 case 2:
-                    caption = "Register " + address.ToString();
+                    caption = "Register ";
                     break;
                 case 3:
-                    caption = "Input " + address.ToString();
+                    caption = "Input ";
                     break;
             }
         }
@@ -85,6 +84,16 @@ namespace Modbus_Tools
             gp.Legend.FontSpec.Size = 5;
 
             gp.AxisFill.Color = Color.White;
+
+            //-----------------------------------------------------
+            for (int i = 0; i < parentFrm.svr.m_scanArea.Count; i++)
+                for (int j = 0; j < parentFrm.svr.m_nRWFlag[i].Length; j++)
+                {
+                    if (parentFrm.svr.m_nRWFlag[i][j] == 1)
+                    {
+                        lstAdr.Items.Add((parentFrm.svr.m_scanArea[i].start_adr + j).ToString());
+                    }
+                }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -96,26 +105,29 @@ namespace Modbus_Tools
         {
             if (bFirst)
             {
-                PointPairList ppl = new PointPairList();
-                gp.AddCurve(caption, ppl, Color.Blue, SymbolType.None);
                 timer1.Interval = cycle;
                 bFirst = false;
             }
 
             int adr_grp = 0;
             int adr_offset = 0;
+            int adr;
 
-            if (parentFrm.svr.FindPosintion(address, ref adr_grp, ref adr_offset))
+            for(int i = 0 ; i < lstGrp.Items.Count ; i++)
             {
-                CurveItem curve = gp.CurveList[0];
-                if (parentFrm.svr.m_nFunc > 1)
-                    curve.AddPoint((double)(ticks++), (double)parentFrm.svr.m_sValue[adr_grp][adr_offset]);
-                else
+                adr = Int32.Parse(lstGrp.Items[i].ToString());
+                if (parentFrm.svr.FindPosintion(adr, ref adr_grp, ref adr_offset))
                 {
-                    if (parentFrm.svr.m_bValue[adr_grp][adr_offset])
-                        curve.AddPoint((double)(ticks++), 1.0);
+                    CurveItem curve = gp.CurveList[i];
+                    if (parentFrm.svr.m_nFunc > 1)
+                        curve.AddPoint((double)(ticks++), (double)parentFrm.svr.m_sValue[adr_grp][adr_offset]);
                     else
-                        curve.AddPoint((double)(ticks++), 0.0);
+                    {
+                        if (parentFrm.svr.m_bValue[adr_grp][adr_offset])
+                            curve.AddPoint((double)(ticks++), 1.0);
+                        else
+                            curve.AddPoint((double)(ticks++), 0.0);
+                    }
                 }
                 zd.AxisChange();
                 zd.Refresh();
@@ -136,11 +148,15 @@ namespace Modbus_Tools
                 try
                 {
                     StreamWriter fil = new StreamWriter(sfd.FileName);
-                    CurveItem curve = gp.CurveList[0];
-                    for (int i = 0; i < curve.Points.Count; i++)
+                    for (int no = 0; no < lstGrp.Items.Count; no++)
                     {
-                        txtLine = string.Format("{0},{1}", curve.Points[i].X, curve.Points[i].Y);
-                        fil.WriteLine(txtLine);
+                        fil.WriteLine("--------" + caption + lstGrp.Items[no].ToString() + "---------");
+                        CurveItem curve = gp.CurveList[no];
+                        for (int i = 0; i < curve.Points.Count; i++)
+                        {
+                            txtLine = string.Format("{0},{1}", curve.Points[i].X, curve.Points[i].Y);
+                            fil.WriteLine(txtLine);
+                        }
                     }
 
                     fil.Close();
@@ -151,6 +167,24 @@ namespace Modbus_Tools
                 }
             }
 
+        }
+
+        private void lstAdr_DoubleClick(object sender, EventArgs e)
+        {
+            string s = lstAdr.SelectedItem.ToString();
+            foreach(object it in lstGrp.Items)
+                if ( it.ToString() == s )
+                    return ;
+
+            lstGrp.Items.Add(s);
+            PointPairList ppl = new PointPairList();
+            gp.AddCurve(caption + s, ppl, Color.Blue, SymbolType.None);
+        }
+
+        private void lstGrp_DoubleClick(object sender, EventArgs e)
+        {
+            gp.CurveList.RemoveAt(lstGrp.SelectedIndex);
+            lstGrp.Items.RemoveAt(lstGrp.SelectedIndex);
         }
     }
 }
