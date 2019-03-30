@@ -66,11 +66,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbProcotol = new System.Windows.Forms.ComboBox();
             this.dataView = new System.Windows.Forms.DataGridView();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.wsmbsControl1 = new WSMBS.WSMBSControl(this.components);
             this.Address = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.wsmbsControl1 = new WSMBS.WSMBSControl(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
             this.splMain.Panel1.SuspendLayout();
             this.splMain.Panel2.SuspendLayout();
@@ -492,6 +493,7 @@
             this.cbSerial.Name = "cbSerial";
             this.cbSerial.Size = new System.Drawing.Size(176, 22);
             this.cbSerial.TabIndex = 3;
+            this.cbSerial.SelectedIndexChanged += new System.EventHandler(this.cbSerial_SelectedIndexChanged);
             // 
             // labPara1
             // 
@@ -543,26 +545,6 @@
             this.dataView.TabIndex = 0;
             this.dataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellEndEdit);
             // 
-            // Address
-            // 
-            this.Address.HeaderText = "地址";
-            this.Address.Name = "Address";
-            this.Address.ReadOnly = true;
-            this.Address.Width = 40;
-            // 
-            // Value
-            // 
-            this.Value.HeaderText = "值";
-            this.Value.Name = "Value";
-            this.Value.Width = 60;
-            // 
-            // Desc
-            // 
-            this.Desc.HeaderText = "描述";
-            this.Desc.Name = "Desc";
-            this.Desc.ReadOnly = true;
-            this.Desc.Width = 200;
-            // 
             // timer1
             // 
             this.timer1.Interval = 500;
@@ -580,6 +562,29 @@
             this.wsmbsControl1.ResponseTimeout = 1000;
             this.wsmbsControl1.RTSEnable = false;
             this.wsmbsControl1.StopBits = 1;
+            // 
+            // Address
+            // 
+            this.Address.HeaderText = "地址";
+            this.Address.Name = "Address";
+            this.Address.ReadOnly = true;
+            this.Address.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Address.Width = 40;
+            // 
+            // Value
+            // 
+            this.Value.HeaderText = "值";
+            this.Value.Name = "Value";
+            this.Value.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Value.Width = 60;
+            // 
+            // Desc
+            // 
+            this.Desc.HeaderText = "描述";
+            this.Desc.Name = "Desc";
+            this.Desc.ReadOnly = true;
+            this.Desc.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Desc.Width = 200;
             // 
             // frMain
             // 
@@ -652,12 +657,13 @@
         private System.Windows.Forms.PictureBox picLogo;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.Label labErr;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Address;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
         private System.Windows.Forms.Label labErrTime;
         private WSMBS.WSMBSControl wsmbsControl1;
         private System.Windows.Forms.Button btnGraph;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Address;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Desc;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

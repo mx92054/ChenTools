@@ -13,7 +13,7 @@ namespace Modbus_Tools
     {
         public Equipment svr;
         private bool bScan;
-        private RegAlais rAlais;
+        public RegAlais rAlais;
         private frGraph fp;
         private int err_disp_timer ;
         private int err_couter;
@@ -345,11 +345,18 @@ namespace Modbus_Tools
         {
             fp = new frGraph();
             fp.parentFrm = this;
+            fp.parentAlais = rAlais;
             fp.Location = new Point(this.Location.X + this.Size.Width + 3, this.Location.Y);
 
             fp.StartDraw(svr.m_nCycle);
             fp.ticks = ticks;
             fp.Show();
+        }
+
+        private void cbSerial_SelectedIndexChanged(object sender, EventArgs e)
+        {
+              this.toolTip1.Active = true;
+              this.toolTip1.SetToolTip(this.cbSerial, this.cbSerial.Items[this.cbSerial.SelectedIndex].ToString());
         }
     }
 }

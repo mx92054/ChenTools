@@ -14,6 +14,7 @@ namespace Modbus_Tools
     public partial class frGraph : Form
     {
         public frMain parentFrm;
+        public RegAlais parentAlais;
         public GraphPane gp;
         public int cycle ;
 
@@ -21,10 +22,20 @@ namespace Modbus_Tools
         private bool bFirst = true;
         private int address;
         private string caption;
+        private int curColor;
+        private Color[] colorlist = new Color[10]
+        {
+            Color.LightBlue,        Color.LightCoral,
+            Color.LightCyan,Color.LightGoldenrodYellow,
+            Color.LightGray,Color.LightGreen,
+            Color.LightPink,Color.LightSalmon,
+            Color.LightSeaGreen,Color.LightSkyBlue
+        };
 
         public frGraph()
         {
             InitializeComponent();
+            curColor = 0;
         }
 
         public void StartDraw(int nCycle)
@@ -178,7 +189,8 @@ namespace Modbus_Tools
 
             lstGrp.Items.Add(s);
             PointPairList ppl = new PointPairList();
-            gp.AddCurve(caption + s, ppl, Color.Blue, SymbolType.None);
+            gp.AddCurve(caption + s, ppl,colorlist[curColor], SymbolType.None);
+            curColor++;
         }
 
         private void lstGrp_DoubleClick(object sender, EventArgs e)
@@ -199,6 +211,32 @@ namespace Modbus_Tools
                 timer1.Enabled = true;
                 btnSuspend.Text = "暂停";
             }
+        }
+
+        private void lstAdr_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int adr = Int32.Parse(lstAdr.SelectedItem.ToString());
+            string str = parentAlais.GetAlais(adr) ;
+            if (str != "")
+            {
+                toolTip1.Active = true;
+                toolTip1.SetToolTip(lstAdr, str);
+            }
+            else
+                toolTip1.Active = false;
+        }
+
+        private void lstGrp_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int adr = Int32.Parse(lstGrp.SelectedItem.ToString());
+            string str = parentAlais.GetAlais(adr);
+            if (str != "")
+            {
+                toolTip1.Active = true;
+                toolTip1.SetToolTip(lstGrp, str);
+            }
+            else
+                toolTip1.Active = false;
         }
     }
 }

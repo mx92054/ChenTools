@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Modbus_Tools
 {
-    class RegAlais
+    public class RegAlais
     {
         public string[] asFileName;
         public int[] lsNum;
