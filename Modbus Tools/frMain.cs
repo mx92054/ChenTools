@@ -349,7 +349,7 @@ namespace Modbus_Tools
             fp.Location = new Point(this.Location.X + this.Size.Width + 3, this.Location.Y);
 
             fp.StartDraw(svr.m_nCycle);
-            fp.ticks = ticks;
+            fp.ticks = 0;
             fp.Show();
         }
 

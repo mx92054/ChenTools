@@ -188,6 +188,7 @@ namespace Modbus_Tools
                     return ;
 
             lstGrp.Items.Add(s);
+            lstGrp.SelectedIndex = lstGrp.Items.Count - 1;
             PointPairList ppl = new PointPairList();
             gp.AddCurve(caption + s, ppl,colorlist[curColor], SymbolType.None);
             curColor++;
@@ -215,6 +216,9 @@ namespace Modbus_Tools
 
         private void lstAdr_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lstAdr.SelectedItem == null )
+                return;
+
             int adr = Int32.Parse(lstAdr.SelectedItem.ToString());
             string str = parentAlais.GetAlais(adr) ;
             if (str != "")
@@ -228,6 +232,9 @@ namespace Modbus_Tools
 
         private void lstGrp_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lstGrp.SelectedItem == null)
+                return;
+
             int adr = Int32.Parse(lstGrp.SelectedItem.ToString());
             string str = parentAlais.GetAlais(adr);
             if (str != "")
