@@ -191,7 +191,7 @@ namespace Modbus_Tools
             lstGrp.SelectedIndex = lstGrp.Items.Count - 1;
             PointPairList ppl = new PointPairList();
             gp.AddCurve(caption + s, ppl,colorlist[curColor], SymbolType.None);
-            curColor++;
+            curColor = curColor++ % 10 ;
         }
 
         private void lstGrp_DoubleClick(object sender, EventArgs e)
