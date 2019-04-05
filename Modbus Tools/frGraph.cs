@@ -17,10 +17,10 @@ namespace Modbus_Tools
         public RegAlais parentAlais;
         public GraphPane gp;
         public int cycle ;
+        public List<bool> abUnsigned = new List<bool>();
 
         public int ticks;
         private bool bFirst = true;
-        private int address;
         private string caption;
         private int curColor;
         private Color[] colorlist = new Color[10]
@@ -131,7 +131,12 @@ namespace Modbus_Tools
                 {
                     CurveItem curve = gp.CurveList[i];
                     if (parentFrm.svr.m_nFunc > 1)
-                        curve.AddPoint((double)(ticks++), (double)parentFrm.svr.m_sValue[adr_grp][adr_offset]);
+                    {
+                        if ( abUnsigned[i] )
+                             curve.AddPoint((double)(ticks++), (double)(ushort)parentFrm.svr.m_sValue[adr_grp][adr_offset]);
+                        else
+                            curve.AddPoint((double)(ticks++), (double)parentFrm.svr.m_sValue[adr_grp][adr_offset]);
+                   }
                     else
                     {
                         if (parentFrm.svr.m_bValue[adr_grp][adr_offset])
@@ -188,6 +193,8 @@ namespace Modbus_Tools
                     return ;
 
             lstGrp.Items.Add(s);
+            lstFmt.Items.Add("有");
+            abUnsigned.Add(false);
             lstGrp.SelectedIndex = lstGrp.Items.Count - 1;
             PointPairList ppl = new PointPairList();
             gp.AddCurve(caption + s, ppl,colorlist[curColor], SymbolType.None);
@@ -197,7 +204,9 @@ namespace Modbus_Tools
         private void lstGrp_DoubleClick(object sender, EventArgs e)
         {
             gp.CurveList.RemoveAt(lstGrp.SelectedIndex);
-            lstGrp.Items.RemoveAt(lstGrp.SelectedIndex);
+            int i = lstGrp.SelectedIndex;
+            lstGrp.Items.RemoveAt(i);
+            lstFmt.Items.RemoveAt(i);
         }
 
         private void btnSuspend_Click(object sender, EventArgs e)
@@ -244,6 +253,18 @@ namespace Modbus_Tools
             }
             else
                 toolTip1.Active = false;
+        }
+
+        private void lstFmt_DoubleClick(object sender, EventArgs e)
+        {
+            int i = lstFmt.SelectedIndex;
+
+           lstFmt.Items.RemoveAt(i);
+           if (abUnsigned[i])
+               lstFmt.Items.Insert(i, "有");
+           else
+               lstFmt.Items.Insert(i, "无");
+           abUnsigned[i] = !abUnsigned[i];
         }
     }
 }

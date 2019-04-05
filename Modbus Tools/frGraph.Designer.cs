@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frGraph));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lstFmt = new System.Windows.Forms.ListBox();
             this.btnSuspend = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,6 +43,7 @@
             this.zd = new ZedGraph.ZedGraphControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,6 +72,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.lstFmt);
             this.groupBox1.Controls.Add(this.btnSuspend);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
@@ -83,6 +87,16 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "曲线";
+            // 
+            // lstFmt
+            // 
+            this.lstFmt.FormattingEnabled = true;
+            this.lstFmt.ItemHeight = 17;
+            this.lstFmt.Location = new System.Drawing.Point(81, 339);
+            this.lstFmt.Name = "lstFmt";
+            this.lstFmt.Size = new System.Drawing.Size(43, 123);
+            this.lstFmt.TabIndex = 5;
+            this.lstFmt.DoubleClick += new System.EventHandler(this.lstFmt_DoubleClick);
             // 
             // btnSuspend
             // 
@@ -118,7 +132,7 @@
             this.lstGrp.ItemHeight = 17;
             this.lstGrp.Location = new System.Drawing.Point(6, 339);
             this.lstGrp.Name = "lstGrp";
-            this.lstGrp.Size = new System.Drawing.Size(127, 123);
+            this.lstGrp.Size = new System.Drawing.Size(69, 123);
             this.lstGrp.TabIndex = 2;
             this.lstGrp.SelectedIndexChanged += new System.EventHandler(this.lstGrp_SelectedIndexChanged);
             this.lstGrp.DoubleClick += new System.EventHandler(this.lstGrp_DoubleClick);
@@ -169,6 +183,15 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(81, 319);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 17);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "符号";
+            // 
             // frGraph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -204,6 +227,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnSuspend;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ListBox lstFmt;
+        private System.Windows.Forms.Label label3;
 
     }
 }
