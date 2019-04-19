@@ -272,7 +272,11 @@ namespace Modbus_Tools
             try
             {
                 int address = Int32.Parse(dataView.Rows[e.RowIndex].Cells[0].Value.ToString());
-                short val = Int16.Parse(dataView.Rows[e.RowIndex].Cells[1].Value.ToString());
+                short val ;
+                if (　ckHex.Checked )
+                    val = Int16.Parse(dataView.Rows[e.RowIndex].Cells[1].Value.ToString(),System.Globalization.NumberStyles.HexNumber);
+                else
+                    val = Int16.Parse(dataView.Rows[e.RowIndex].Cells[1].Value.ToString());
                 svr.In_Queue(address, val);
             }
             catch (Exception ex)
